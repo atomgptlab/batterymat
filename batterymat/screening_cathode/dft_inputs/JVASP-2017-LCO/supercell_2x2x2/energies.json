@@ -1,0 +1,68 @@
+{
+  "jid": "JVASP-2017",
+  "dim": [
+    2,
+    2,
+    2
+  ],
+  "n_li_total": 8,
+  "functional": "optb88vdw",
+  "layered": true,
+  "e_li_metal": -0.9646,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 8,
+      "energy": -129.1329674,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 7,
+      "energy": -123.85649868,
+      "removed_li_index": 0
+    },
+    {
+      "step": 2,
+      "n_li": 6,
+      "energy": -118.83939409,
+      "removed_li_index": 0
+    },
+    {
+      "step": 3,
+      "n_li": 5,
+      "energy": -113.81221024,
+      "removed_li_index": 0
+    },
+    {
+      "step": 4,
+      "n_li": 4,
+      "energy": -109.2484589,
+      "removed_li_index": 0
+    },
+    {
+      "step": 5,
+      "n_li": 3,
+      "energy": -103.73212441,
+      "removed_li_index": 2
+    },
+    {
+      "step": 6,
+      "n_li": 2,
+      "energy": -98.85168399,
+      "removed_li_index": 0
+    },
+    {
+      "step": 7,
+      "n_li": 1,
+      "energy": -93.11203953,
+      "removed_li_index": 1
+    },
+    {
+      "step": 8,
+      "n_li": 0,
+      "energy": -87.9731061,
+      "removed_li_index": 0
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "jid": "JVASP-42723",
+  "dim": [
+    2,
+    2,
+    1
+  ],
+  "n_li_total": 16,
+  "functional": "pbe",
+  "layered": false,
+  "e_li_metal": -1.9031,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 16,
+      "energy": -760.94778357,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 15,
+      "energy": -755.54231764,
+      "removed_li_index": 8
+    },
+    {
+      "step": 2,
+      "n_li": 14,
+      "energy": -750.13008957,
+      "removed_li_index": 9
+    },
+    {
+      "step": 3,
+      "n_li": 13,
+      "energy": -744.74484501,
+      "removed_li_index": 4
+    },
+    {
+      "step": 4,
+      "n_li": 12,
+      "energy": -739.37268221,
+      "removed_li_index": 5
+    },
+    {
+      "step": 5,
+      "n_li": 11,
+      "energy": -734.03671269,
+      "removed_li_index": 3
+    },
+    {
+      "step": 6,
+      "n_li": 10,
+      "energy": -728.51409884,
+      "removed_li_index": 1
+    },
+    {
+      "step": 7,
+      "n_li": 9,
+      "energy": -723.07443315,
+      "removed_li_index": 9
+    },
+    {
+      "step": 8,
+      "n_li": 8,
+      "energy": -717.30743095,
+      "removed_li_index": 7
+    },
+    {
+      "step": 9,
+      "n_li": 7,
+      "energy": -711.82332134,
+      "removed_li_index": 2
+    },
+    {
+      "step": 10,
+      "n_li": 6,
+      "energy": -706.42716867,
+      "removed_li_index": 2
+    },
+    {
+      "step": 11,
+      "n_li": 5,
+      "energy": -700.75762189,
+      "removed_li_index": 4
+    },
+    {
+      "step": 12,
+      "n_li": 4,
+      "energy": -695.13568133,
+      "removed_li_index": 4
+    },
+    {
+      "step": 13,
+      "n_li": 3,
+      "energy": -689.2414614,
+      "removed_li_index": 3
+    },
+    {
+      "step": 14,
+      "n_li": 2,
+      "energy": -683.72939548,
+      "removed_li_index": 2
+    },
+    {
+      "step": 15,
+      "n_li": 1,
+      "energy": -678.27468896,
+      "removed_li_index": 1
+    },
+    {
+      "step": 16,
+      "n_li": 0,
+      "energy": -672.96607271,
+      "removed_li_index": 0
+    }
+  ]
+}

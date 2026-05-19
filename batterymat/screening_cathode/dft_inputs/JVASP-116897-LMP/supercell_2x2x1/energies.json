@@ -1,0 +1,115 @@
+{
+  "jid": "JVASP-116897",
+  "dim": [
+    2,
+    2,
+    1
+  ],
+  "n_li_total": 16,
+  "functional": "pbe",
+  "e_li_metal": -1.9031,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 16,
+      "energy": -798.06163257,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 15,
+      "energy": -792.66376603,
+      "removed_li_index": 0
+    },
+    {
+      "step": 2,
+      "n_li": 14,
+      "energy": -786.87415296,
+      "removed_li_index": 0
+    },
+    {
+      "step": 3,
+      "n_li": 13,
+      "energy": -781.24506943,
+      "removed_li_index": 0
+    },
+    {
+      "step": 4,
+      "n_li": 12,
+      "energy": -776.11056347,
+      "removed_li_index": 2
+    },
+    {
+      "step": 5,
+      "n_li": 11,
+      "energy": -770.55512738,
+      "removed_li_index": 4
+    },
+    {
+      "step": 6,
+      "n_li": 10,
+      "energy": -764.78390135,
+      "removed_li_index": 3
+    },
+    {
+      "step": 7,
+      "n_li": 9,
+      "energy": -759.17500059,
+      "removed_li_index": 7
+    },
+    {
+      "step": 8,
+      "n_li": 8,
+      "energy": -753.41415973,
+      "removed_li_index": 8
+    },
+    {
+      "step": 9,
+      "n_li": 7,
+      "energy": -747.53558183,
+      "removed_li_index": 4
+    },
+    {
+      "step": 10,
+      "n_li": 6,
+      "energy": -741.48813045,
+      "removed_li_index": 0
+    },
+    {
+      "step": 11,
+      "n_li": 5,
+      "energy": -735.44200672,
+      "removed_li_index": 0
+    },
+    {
+      "step": 12,
+      "n_li": 4,
+      "energy": -729.42942494,
+      "removed_li_index": 0
+    },
+    {
+      "step": 13,
+      "n_li": 3,
+      "energy": -723.31686249,
+      "removed_li_index": 0
+    },
+    {
+      "step": 14,
+      "n_li": 2,
+      "energy": -717.09138505,
+      "removed_li_index": 1
+    },
+    {
+      "step": 15,
+      "n_li": 1,
+      "energy": -710.84635978,
+      "removed_li_index": 0
+    },
+    {
+      "step": 16,
+      "n_li": 0,
+      "energy": null,
+      "removed_li_index": 0
+    }
+  ]
+}
