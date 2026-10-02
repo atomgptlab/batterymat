@@ -201,9 +201,9 @@
   "functional": "optb88vdw",
   "mu_metal": 0.9196,
   "n_total": 8,
-  "recorded": "8->3 of 8",
-  "V_avg_recorded_range": 3.432,
-  "complete": false,
+  "recorded": "8->0 of 8",
+  "V_avg_recorded_range": 3.73,
+  "complete": true,
   "hull": [
    {
     "x_from": 1.0,
@@ -212,11 +212,18 @@
    },
    {
     "x_from": 0.5,
-    "x_to": 0.375,
-    "V": 4.818
+    "x_to": 0.125,
+    "V": 4.181
+   },
+   {
+    "x_from": 0.125,
+    "x_to": 0.0,
+    "V": 4.951
    }
   ],
-  "unconverged_steps": [],
+  "unconverged_steps": [
+   "step_06_Na2"
+  ],
   "V_avg_exp_range": {
    "range": "8->4",
    "V": 3.086

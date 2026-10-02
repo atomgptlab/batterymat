@@ -9,7 +9,7 @@
 > -0.9778 eV/atom optB88-vdW Li reference in `Li_sv/static`; the GGA=OR run moved to
 > `Li_sv_optPBEvdW/`). Runners set NCORE per job so it divides the ranks per k-group.
 
-## Status and results (2026-10-01, evening)
+## Status and results (2026-10-02, all runs complete)
 
 Runs on atomgptlab (`/data/jlee859/revision`, cpu partition, VASP 6 `vasp_std`). Results are
 pulled back with the include-list rsync (energies.json, OUTCAR, CONTCAR, OSZICAR, INCAR, POSCAR,
@@ -23,14 +23,13 @@ KPOINTS, POTCAR_spec; never POTCAR) and summarised by `../analysis/revision_volt
 | `JVASP-2017-LCO` (original, GGA=OR = optPBE-vdW) | kept for comparison | full 4.18 V, x 1->0.5 4.01 V |
 | B. `JVASP-144791-NMC-vdW` | complete, 17/17 converged, no intervention (ISIF=2 after step 0, like the PBE chain) | full **4.76 V** (PBE+U 4.40; exp ~3.7); x 1->0.5 4.28 (PBE 3.94); x 0.5->0 5.24 (PBE 4.86). Near-uniform +0.36 V shift at fixed cell. Cell-relaxed endpoints (ISIF=3 at Li8 and Li0, `extra_2026-10-01/NMC-{PBE,vdW}-ISIF3/`): PBE+U 3.73 / 4.63 / 4.18 V (x 1->0.5 / 0.5->0 / full), optB88 4.02 / 4.88 / 4.45 V; cells contract 5% and 9-10%. So the fixed-cell protocol adds ~0.2 V, optB88 sits 0.25-0.38 V above PBE either way, and the ~0.9 V jump at x=0.5 persists in all four. PBE+U fixed-cell 4.40 V stays the benchmark (JARVIS spacegroup is P1, so the rule routes it to PBE) |
 | C. `spotcheck/` | 28/30 converged (6 delithiated endpoints restarted from their last structure in `extra_2026-10-01/spotcheck-restart/`; Li8MnO6 and Li7FeO6 still drifting after 500 steps) | all: MAE 0.88 V, ME +0.68, Spearman 0.90; redox-metal hosts (n=14): MAE 0.54, offset +0.35, scatter 0.43, Spearman 0.94 (`analysis/spotcheck_stats.json`) |
-| D. `JVASP-79809-NCO` (Na) | steps 0 to 5 converged (step 5 needed a restart after the 24 h limit, ~150 ionic steps); step 6 running on the 7-day script | Na8->Na4: **3.09 V** (exp ~2.9 over x 1->0.5, Lei et al. 2014), +0.19 V. Step Na4->Na3 = 4.82 V (outside measured range) |
+| D. `JVASP-79809-NCO` (Na) | complete, 9/9 states; all converged except step 6 (Na2), which hit NSW = 200; cell -20% at CoO2 | Na8->Na4: **3.09 V** (exp ~2.9 over x 1->0.5, Lei et al. 2014), +0.19 V. Full range **3.73 V** (endpoints converged) against 3.17 V from the force-field screen (FF 0.56 V low); Na4->Na0 4.37 V; step voltages 3.32 / 3.00 / 3.13 / 2.89 / 4.82 / 4.17 / 3.55 / 4.95 V |
 | D. `JVASP-11340-MMO` (Mg) | complete; steps 0 to 15 converged, step 16 (Mg0) hit NSW = 200 unconverged | Mg16->Mg10: **3.10 V** vs ~3.4 V (Okamoto et al. 2015), -0.30 V. Hull 3.08 / 3.11 / 3.32 / 3.43 / 3.66 V over Mg16->Mg1 (the unconverged Mg0 step excluded); Mg16->Mg1 3.22 V |
 | D. metal references | complete | Na: PBE -1.31054, optB88 +0.91960; Mg: PBE -1.50576, optB88 +1.10509 eV/atom (in `dft_prep._E_ION_METAL`) |
 | Li optB88 reference `JVASP-913-Li/Li_sv_optB88vdW` | complete | -0.97791 eV/atom (confirms -0.9778) |
 | `JVASP-{141543,154749,77457,116849}-B88` (true-optB88 reruns of the prospective runs) | all complete | Rb2LiFeF6 A 6.127 V, B 6.128 V (optPBE 6.03); LiCa2Ag 0.446 V (optPBE 0.41); LiV2F7 4.918 V (optPBE 4.84). Prospective FF-vs-DFT MAE 0.88 -> 0.90 V |
 
-Local copies of the running chains are only refreshed when results are pulled, so the local
-`energies.json` of NCO lags the cluster.
+All chains are complete and the local copies are current (2026-10-02).
 
 VASP input bundles for four new campaigns answering the referee reports. Everything here
 was generated on 2026-09-24 with `../dft_prep.py` (see "Changes to dft_prep.py" below) and
