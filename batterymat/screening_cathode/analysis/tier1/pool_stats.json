@@ -1,0 +1,130 @@
+{
+  "pool_size": 7193,
+  "n_pred": 7193,
+  "partition_counts": {
+    "train": 5756,
+    "test": 738,
+    "val": 699
+  },
+  "n_with_v_label": 7193,
+  "tier1_vs_tier2_all": {
+    "n": 7193,
+    "spearman": 0.8682171245883297,
+    "pearson": 0.8772856820342634,
+    "mae_V": 0.7761108539918753,
+    "rmse_V": 1.026420882103471,
+    "mean_diff_V(first-second)": -0.6326835266653612,
+    "median_diff_V": -0.6051358282566071,
+    "window_agreement": 0.729737244543306,
+    "n_first_in_window": 2978,
+    "n_second_in_window": 3034,
+    "n_both_in_window": 2034
+  },
+  "tier1_vs_tier2_not_in_train": {
+    "n": 1437,
+    "spearman": 0.841777147467349,
+    "pearson": 0.8514004451490057,
+    "mae_V": 0.7454513584708209,
+    "rmse_V": 1.020454411175834,
+    "mean_diff_V(first-second)": -0.6245067309772172,
+    "median_diff_V": -0.633298397064209,
+    "window_agreement": 0.7397355601948504,
+    "n_first_in_window": 744,
+    "n_second_in_window": 768,
+    "n_both_in_window": 569
+  },
+  "tier1_vs_tier2_test_only": {
+    "n": 738,
+    "spearman": 0.8226468896482636,
+    "pearson": 0.8085755351454054,
+    "mae_V": 0.7991736270668067,
+    "rmse_V": 1.1467491981289821,
+    "mean_diff_V(first-second)": -0.7010463974308447,
+    "median_diff_V": -0.6699094921350479,
+    "window_agreement": 0.7344173441734417,
+    "n_first_in_window": 382,
+    "n_second_in_window": 412,
+    "n_both_in_window": 299
+  },
+  "tier1_vs_tier2_not_in_training_set_at_all(none)": {
+    "n": 0
+  },
+  "tier1_vs_label_all": {
+    "n": 7193,
+    "spearman": 0.9938008361286718,
+    "pearson": 0.9939257421764345,
+    "mae_V": 0.06437323782292524,
+    "rmse_V": 0.16902441238862478,
+    "mean_diff_V(first-second)": -0.005174610231742395,
+    "median_diff_V": -0.009579818725585998,
+    "window_agreement": 0.9758098150980119,
+    "n_first_in_window": 2978,
+    "n_second_in_window": 2988,
+    "n_both_in_window": 2896
+  },
+  "tier1_vs_label_not_in_train": {
+    "n": 1437,
+    "spearman": 0.9635397325700729,
+    "pearson": 0.9637312206565305,
+    "mae_V": 0.18642778753454517,
+    "rmse_V": 0.36487404594544354,
+    "mean_diff_V(first-second)": -0.003415497903949942,
+    "median_diff_V": -0.011022417068481616,
+    "window_agreement": 0.9373695198329853,
+    "n_first_in_window": 744,
+    "n_second_in_window": 740,
+    "n_both_in_window": 697
+  },
+  "tier1_vs_label_test_only": {
+    "n": 738,
+    "spearman": 0.9663420385560586,
+    "pearson": 0.9714544158340233,
+    "mae_V": 0.1648749254937902,
+    "rmse_V": 0.3150446137966338,
+    "mean_diff_V(first-second)": -0.016579160545011195,
+    "median_diff_V": -0.013424715280532795,
+    "window_agreement": 0.943089430894309,
+    "n_first_in_window": 382,
+    "n_second_in_window": 378,
+    "n_both_in_window": 359
+  },
+  "label_vs_tier2_all": {
+    "n": 7193,
+    "spearman": 0.8677455693805499,
+    "pearson": 0.8783308873346047,
+    "mae_V": 0.76973882438796,
+    "rmse_V": 1.0205183237531776,
+    "mean_diff_V(first-second)": -0.6275089164336187,
+    "median_diff_V": -0.5932954120635983,
+    "window_agreement": 0.7330738217711664,
+    "n_first_in_window": 2988,
+    "n_second_in_window": 3034,
+    "n_both_in_window": 2051
+  },
+  "label_vs_tier2_not_in_train": {
+    "n": 1437,
+    "spearman": 0.833459302318947,
+    "pearson": 0.8466126063911115,
+    "mae_V": 0.7486841060380398,
+    "rmse_V": 1.0297137768476028,
+    "mean_diff_V(first-second)": -0.6210912330732673,
+    "median_diff_V": -0.6249595260620115,
+    "window_agreement": 0.7411273486430062,
+    "n_first_in_window": 740,
+    "n_second_in_window": 768,
+    "n_both_in_window": 568
+  },
+  "tier1_vs_tier2_within_tier2_window": {
+    "n": 3034,
+    "spearman": 0.5377243458099867,
+    "pearson": 0.4861628763210375,
+    "mae_V": 0.7169382057927081,
+    "rmse_V": 0.8308332847095065,
+    "mean_diff_V(first-second)": -0.6571708713369717,
+    "median_diff_V": -0.6685318946838379,
+    "window_agreement": 0.6704021094264997,
+    "n_first_in_window": 2034,
+    "n_second_in_window": 3034,
+    "n_both_in_window": 2034
+  }
+}

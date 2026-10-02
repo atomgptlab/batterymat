@@ -1,0 +1,23 @@
+{
+  "jid": "JVASP-11340",
+  "ion": "Mg",
+  "z": 2,
+  "dim": [
+    2,
+    2,
+    2
+  ],
+  "n_ion_total": 16,
+  "functional": "pbe",
+  "layered": false,
+  "e_ion_metal": null,
+  "steps": [
+    {
+      "step": 0,
+      "n_ion": 16,
+      "energy": null,
+      "removed_ion_index": null
+    }
+  ],
+  "tag": "MMO"
+}

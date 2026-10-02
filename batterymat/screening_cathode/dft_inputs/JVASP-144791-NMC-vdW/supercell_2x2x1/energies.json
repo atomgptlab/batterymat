@@ -1,0 +1,117 @@
+{
+  "jid": "JVASP-144791",
+  "dim": [
+    2,
+    2,
+    1
+  ],
+  "n_li_total": 16,
+  "functional": "optb88vdw",
+  "layered": false,
+  "e_li_metal": -0.9778,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 16,
+      "energy": -431.40042121,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 15,
+      "energy": -426.26473528,
+      "removed_li_index": 4
+    },
+    {
+      "step": 2,
+      "n_li": 14,
+      "energy": -421.23843387,
+      "removed_li_index": 6
+    },
+    {
+      "step": 3,
+      "n_li": 13,
+      "energy": -416.04378944,
+      "removed_li_index": 5
+    },
+    {
+      "step": 4,
+      "n_li": 12,
+      "energy": -410.87727696,
+      "removed_li_index": 4
+    },
+    {
+      "step": 5,
+      "n_li": 11,
+      "energy": -405.42199283,
+      "removed_li_index": 4
+    },
+    {
+      "step": 6,
+      "n_li": 10,
+      "energy": -400.2360875,
+      "removed_li_index": 5
+    },
+    {
+      "step": 7,
+      "n_li": 9,
+      "energy": -394.76026455,
+      "removed_li_index": 4
+    },
+    {
+      "step": 8,
+      "n_li": 8,
+      "energy": -389.35061981,
+      "removed_li_index": 4
+    },
+    {
+      "step": 9,
+      "n_li": 7,
+      "energy": -383.17599385,
+      "removed_li_index": 2
+    },
+    {
+      "step": 10,
+      "n_li": 6,
+      "energy": -376.95015903,
+      "removed_li_index": 1
+    },
+    {
+      "step": 11,
+      "n_li": 5,
+      "energy": -370.87567595,
+      "removed_li_index": 1
+    },
+    {
+      "step": 12,
+      "n_li": 4,
+      "energy": -364.69676276,
+      "removed_li_index": 0
+    },
+    {
+      "step": 13,
+      "n_li": 3,
+      "energy": -358.47937291,
+      "removed_li_index": 3
+    },
+    {
+      "step": 14,
+      "n_li": 2,
+      "energy": -352.25511832,
+      "removed_li_index": 0
+    },
+    {
+      "step": 15,
+      "n_li": 1,
+      "energy": -345.95237804,
+      "removed_li_index": 0
+    },
+    {
+      "step": 16,
+      "n_li": 0,
+      "energy": -339.63082036,
+      "removed_li_index": 0
+    }
+  ],
+  "tag": "NMC-vdW"
+}

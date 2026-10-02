@@ -1,0 +1,33 @@
+{
+  "jid": "JVASP-141543",
+  "dim": [
+    1,
+    1,
+    1
+  ],
+  "n_li_total": 2,
+  "functional": "optb88vdw",
+  "layered": true,
+  "e_li_metal": -0.9778,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 2,
+      "energy": -56.9823501,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 1,
+      "energy": -49.66984882,
+      "removed_li_index": 5
+    },
+    {
+      "step": 2,
+      "n_li": 0,
+      "energy": -42.77264034,
+      "removed_li_index": 4
+    }
+  ],
+  "tag": "B88"
+}

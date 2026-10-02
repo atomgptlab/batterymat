@@ -12,10 +12,50 @@ import numpy as np
 FILTERS = {
     "avg_voltage_min": 3.0,
     "avg_voltage_max": 4.5,
-    "max_grav_cap_min": 20.0,
+    "q_grav_min": 100.0,   # mAh/g, theoretical per formula unit (Goodenough & Park 2013)
     "ehull_max": 0.05,
     "max_voltage_max": 5.5,
+    "require_redox_metal": True,
 }
+
+# Redox-active transition metals accepted as the charge-compensating species.
+# Same criterion as stage 1 of the Alexandria funnel; it removes Li-rich
+# electrolyte-like hosts (e.g. Li14P2N6O3, Li2CN2) whose ALIGNN-FF
+# delithiation voltage is not a cathode voltage.
+REDOX_METALS = {"Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu",
+                "Nb", "Mo", "Ru", "Rh", "W"}
+
+# Faraday constant in mAh/mol: 96485.33 C/mol / 3.6 C per mAh
+_F_MAH_PER_MOL = 96485.3329 / 3.6
+
+# Working ion this screen is for. Li_min.csv also carries rows for other
+# working ions on the same JID (name prefix K_, Ca_, ...); they are dropped.
+WORKING_ION = "Li"
+
+
+def extract_ion(name: str) -> str:
+    """Extract the working ion from a Li_min.csv name field.
+
+    Example: 'K_JVASP-100079_K2LiEuCl6.json' -> 'K'
+    """
+    return name.split("_")[0]
+
+
+def theoretical_grav_capacity(atoms_dict: dict, ion: str = WORKING_ION) -> float:
+    """Theoretical gravimetric capacity in mAh/g, per formula unit.
+
+    Q = n_ion * z * F / M, with n_ion the number of working-ion atoms in the
+    cell and M the cell mass. Both scale with cell size, so the ratio is the
+    intensive per-formula-unit quantity (LiCoO2 -> 273.8 mAh/g,
+    LiFePO4 -> 169.9 mAh/g). z = 1 for Li/Na/K, 2 for Mg/Ca/Zn, 3 for Al.
+    """
+    from jarvis.core.atoms import Atoms
+
+    z = {"Li": 1, "Na": 1, "K": 1, "Mg": 2, "Ca": 2, "Zn": 2, "Al": 3}[ion]
+    atoms = Atoms.from_dict(atoms_dict)
+    comp = atoms.composition
+    n_ion = comp.to_dict().get(ion, 0)
+    return n_ion * z * _F_MAH_PER_MOL / comp.weight
 
 
 def extract_jid(name: str) -> str:
@@ -63,6 +103,11 @@ def load_and_merge(
         )
 
     li_min_df["jid"] = li_min_df["name"].apply(extract_jid)
+    li_min_df["ion"] = li_min_df["name"].apply(extract_ion)
+    n_other = (li_min_df["ion"] != WORKING_ION).sum()
+    if n_other:
+        print(f"Dropping {n_other} rows for working ions other than {WORKING_ION}")
+        li_min_df = li_min_df[li_min_df["ion"] == WORKING_ION]
 
     merged = pd.merge(li_min_df, dft3d_df[["jid", "ehull", "optb88vdw_bandgap", "formula", "atoms"]], on="jid", how="inner")
 
@@ -74,7 +119,24 @@ def load_and_merge(
             file=sys.stdout,
         )
 
-    return merged.reset_index(drop=True)
+    merged = merged.reset_index(drop=True)
+
+    # The screening CSV's max_grav_cap is normalised to the supercell mass
+    # with one electron per cell (not per Li), so it scales with cell size.
+    # Keep it under an explicit name and add the intensive per-formula-unit
+    # theoretical capacity used for filtering and ranking.
+    if merged["jid"].duplicated().any():
+        raise ValueError("Duplicate JIDs after working-ion filter; check Li_min.csv")
+    merged = merged.rename(columns={"max_grav_cap": "max_grav_cap_cell"})
+    merged["q_grav"] = merged["atoms"].apply(theoretical_grav_capacity)
+    return merged
+
+
+def has_redox_metal(formula: str) -> bool:
+    """True if the formula contains an element in REDOX_METALS."""
+    import re
+
+    return bool(set(re.findall(r"[A-Z][a-z]?", formula)) & REDOX_METALS)
 
 
 def filter_cathode_candidates(df: pd.DataFrame) -> pd.DataFrame:
@@ -82,17 +144,20 @@ def filter_cathode_candidates(df: pd.DataFrame) -> pd.DataFrame:
 
     Filters (spec Section 3):
       - avg_voltage: 3.0 – 4.5 V (inclusive)
-      - max_grav_cap: > 20 mAh/g (strict)
+      - q_grav: > 100 mAh/g theoretical per formula unit (strict)
       - ehull: <= 0.05 eV
       - max_voltage: <= 5.5 V
+      - formula contains a redox-active transition metal (REDOX_METALS)
     """
     mask = (
         (df["avg_voltage"] >= FILTERS["avg_voltage_min"])
         & (df["avg_voltage"] <= FILTERS["avg_voltage_max"])
-        & (df["max_grav_cap"] > FILTERS["max_grav_cap_min"])
+        & (df["q_grav"] > FILTERS["q_grav_min"])
         & (df["ehull"] <= FILTERS["ehull_max"])
         & (df["max_voltage"] <= FILTERS["max_voltage_max"])
     )
+    if FILTERS.get("require_redox_metal"):
+        mask &= df["formula"].apply(has_redox_metal)
     return df[mask].reset_index(drop=True)
 
 
@@ -107,7 +172,7 @@ def _safe_norm(series: pd.Series) -> pd.Series:
 def rank_candidates(df: pd.DataFrame) -> pd.DataFrame:
     """Add composite score and sort candidates descending.
 
-    Score = (1/3)*norm(avg_voltage) + (1/3)*norm(max_grav_cap) - (1/3)*norm(ehull)
+    Score = (1/3)*norm(avg_voltage) + (1/3)*norm(q_grav) - (1/3)*norm(ehull)
 
     If fewer than 2 candidates, returns unranked with a warning.
     """
@@ -122,7 +187,7 @@ def rank_candidates(df: pd.DataFrame) -> pd.DataFrame:
     ranked = df.copy()
     ranked["score"] = (
         (1 / 3) * _safe_norm(ranked["avg_voltage"])
-        + (1 / 3) * _safe_norm(ranked["max_grav_cap"])
+        + (1 / 3) * _safe_norm(ranked["q_grav"])
         - (1 / 3) * _safe_norm(ranked["ehull"])
     )
     return ranked.sort_values("score", ascending=False).reset_index(drop=True)
@@ -173,6 +238,7 @@ def run_screening(
     merged = load_and_merge(li_min_df, dft3d_df)
     filtered = filter_cathode_candidates(merged)
     ranked = rank_candidates(filtered)
+    ranked.insert(0, "rank", range(1, len(ranked) + 1))
 
     # Ensure 'score' column is always present in the output CSV
     if "score" not in ranked.columns:
@@ -188,4 +254,4 @@ def run_screening(
 
 if __name__ == "__main__":
     candidates = run_screening()
-    print(candidates[["jid", "formula", "avg_voltage", "max_grav_cap", "ehull", "score"]].to_string(index=False))
+    print(candidates[["rank", "jid", "formula", "avg_voltage", "q_grav", "ehull", "score"]].head(50).to_string(index=False))

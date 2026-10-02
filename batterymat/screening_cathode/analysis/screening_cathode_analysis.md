@@ -16,11 +16,11 @@ The hull is computed from formation energies: `dE(x) = E(x) - x*E(1) - (1-x)*E(0
 
 | Plateau | x_Li range | DFT Hull | Experiment | Difference |
 |---------|-----------|----------|------------|------------|
-| 1 | 0.69 → 1.0 | 3.48 V | ~3.42 V | +0.06 V |
-| 2 | 0.56 → 0.69 | 3.58 V | ~3.42 V | +0.16 V |
-| 3 | 0.38 → 0.56 | 3.65 V | ~3.42 V | +0.23 V |
-| 4 | 0 → 0.38 | 3.67 V | ~3.42 V | +0.25 V |
-| **Weighted avg** | **0 → 1.0** | **3.60 V** | **~3.42 V** | **+0.18 V** |
+| 1 | 0.69 → 1.0 | 3.48 V | 3.43 V | +0.05 V |
+| 2 | 0.56 → 0.69 | 3.58 V | 3.43 V | +0.15 V |
+| 3 | 0.38 → 0.56 | 3.65 V | 3.43 V | +0.22 V |
+| 4 | 0 → 0.38 | 3.67 V | 3.43 V | +0.24 V |
+| **Weighted avg** | **0 → 1.0** | **3.60 V** | **3.43 V** | **+0.17 V** |
 
 **Discussion:** Experimentally, LiFePO₄ exhibits a single flat plateau at ~3.4 V due to a first-order two-phase reaction between LiFePO₄ and FePO₄ with no stable intermediate solid solutions at room temperature. The DFT hull instead produces 4 plateaus (5 hull vertices), which is an artifact of the finite 2×2×1 supercell (16 Li atoms). The discrete Li-vacancy orderings in the supercell create artificial intermediate stable compositions that would not exist in the thermodynamic limit (infinite system or disordered solid solution).
 
@@ -34,7 +34,7 @@ The slight upward slope from 3.48 V (high x) to 3.67 V (low x) reflects stronger
 
 ## LMP (LiMnPO₄, olivine, PBE+U)
 
-**16/17 steps complete (Li₁₆→Li₁). Step 16 (Li₀) abandoned — Mn⁴⁺ unconvergeable.**
+**16/17 steps complete (Li₁₆→Li₁). Step 16 (Li₀, the fully delithiated MnPO₄ endpoint: Mn³⁺, high-spin d⁴) abandoned — did not converge.**
 
 No convex hull computed — requires both x=1 and x=0 endpoints.
 
@@ -47,7 +47,7 @@ No convex hull computed — requires both x=1 and x=0 endpoints.
 
 **Discussion:** Without the x=0 endpoint, only raw step voltages are available. The average of 3.91 V underestimates the experimental ~4.1 V by 0.19 V. This is the opposite sign from LFP (which overestimates) — a known issue with PBE+U on Mn²⁺/Mn³⁺ olivines, where U(Mn)=3.9 eV may be slightly too low to fully localize the Mn d-electrons.
 
-The step_16 (fully delithiated MnPO₄) failed to converge despite multiple attempts with different INCAR settings (ALGO=All, cold start, gentler mixing). The energy oscillated ~200 eV above the expected ground state, trapped in a false electronic minimum. This is a well-known pathology of Mn⁴⁺ (d³) in PBE+U — the many near-degenerate magnetic configurations create an extremely rugged energy landscape. The fully delithiated state is not experimentally accessible anyway — LMP operates as a flat two-phase system and is never cycled to x=0.
+The step_16 (fully delithiated MnPO₄) failed to converge despite multiple attempts with different INCAR settings (ALGO=All, cold start, gentler mixing). The energy oscillated ~200 eV above the expected ground state, trapped in a false electronic minimum. This is a convergence difficulty of the Jahn–Teller-active Mn³⁺ (d⁴) endpoint in PBE+U — the many near-degenerate magnetic configurations create an extremely rugged energy landscape. The fully delithiated state is not experimentally accessible anyway — LMP operates as a flat two-phase system and is never cycled to x=0.
 
 Like LFP, LMP is expected to show a single flat plateau (first-order LiMnPO₄ ↔ MnPO₄ phase transition). The hull, if computable, would likely show the same finite-size splitting into multiple narrow plateaus near 4.1 V.
 
@@ -108,27 +108,24 @@ This is the best-performing material in our study — the hull structure, platea
 
 ---
 
-## LCO (LiCoO₂, layered, optB88-vdW)
+## LCO (LiCoO₂, layered, optB88-vdW+U)
 
-**9/9 steps complete (Li₈→Li₀).**
+**Reported run: `JVASP-2017-LCO-B88` (true optB88-vdW: GGA=BO, PARAM1=0.1833333333, PARAM2=0.22), 9/9 steps converged, no manual intervention.** The run in the original submission (`JVASP-2017-LCO`) used GGA=OR, which is optPBE-vdW, not optB88-vdW; it is kept for comparison only.
 
-| Plateau | x_Li range | DFT Hull | Experiment | Difference |
-|---------|-----------|----------|------------|------------|
-| H1→H2 | 0.5 → 1.0 | 4.01 V | ~3.93 V | +0.08 V |
-| Order-disorder | 0.25 → 0.5 | 4.23 V | ~4.07 V | +0.16 V |
-| H2→H3 | 0 → 0.25 | 4.48 V | ~4.17 V | +0.31 V |
-| **Weighted avg** | **0 → 1.0** | **4.18 V** | **~4.05 V** | **+0.13 V** |
+Experimentally LiCoO₂ is cycled only to about x = 0.5 (4.2 V charge cut-off), so the benchmark compares the DFT average over x = 1 → 0.5. The measured open-circuit voltage is flat at 3.92 V for 3/4 < x < 1 and at 4.50 V for 0 < x < 1/4 (Ohzuku & Ueda 1994); over x = 1 → 0.5 it rises from 3.92 V toward the 4.2 V cut-off, and the midpoint, ~4.05 V, is used as the reference.
 
-(Hull plateau values recomputed from current `energies.json` via `compute_voltage_curve`; values were 3.99/4.22/4.46 V in earlier snapshots.)
+| Range | Experiment | optB88-vdW+U | PBE+U (same cell) | optPBE-vdW+U (original run) |
+|-------|-----------|--------------|-------------------|-----------------------------|
+| 3/4 < x < 1 (two-phase plateau) | 3.92 V | 4.18 V (+0.26) | 3.82 V (−0.10) | 4.18 V |
+| x = 1 → 0.5 (cycled range) | ~4.05 V (3.92–4.2) | **4.21 V (+0.16)** | 3.81 V | 4.01 V |
+| 0 < x < 1/4 (two-phase plateau) | 4.50 V | 4.78 V (+0.28) | 3.81 V (−0.69) | 4.47 V |
+| Full range x = 1 → 0 | n/a | 4.45 V | 3.84 V | 4.18 V |
 
-**Discussion:** The three plateaus correctly capture the staged H1→H2→H3 delithiation transitions in layered LiCoO₂. The lowest plateau (H1→H2, the main discharge feature) matches well at +0.08 V. The upper two plateaus are increasingly overestimated at deep delithiation due to:
+Hull plateaus (optB88): 4.18 / 4.23 / 4.62 / 4.78 V. Cell volume within 1% of the lithiated cell down to x = 3/8, then contracts gradually to −6.4% at CoO₂ (no blow-up).
 
-1. **Finite supercell size:** The 2×2×2 supercell contains only 8 Li atoms. At deep delithiation (x<0.5), removing a single Li represents a 12.5% composition jump, too coarse to resolve the subtle staging transitions and Li ordering phenomena near x=0.5 and x=0.25.
-2. **Functional limitations:** optB88-vdW tends to slightly overbind the delithiated phases. The H2→H3 transition involves significant c-axis contraction and CoO₂ slab rearrangement sensitive to interlayer interaction treatment.
+**Discussion:** optB88-vdW+U reproduces the 0.58 V rise between the two experimental two-phase plateaus to within 0.01 V, with a uniform offset of about +0.27 V. PBE+U on the same supercell is flat (3.81–3.82 V) and misses the rise, and its cell expands by 3.5% on delithiation instead of contracting: without dispersion the interlayer binding of the Li-poor states is wrong, which is the case for routing layered hosts to the vdW functional. The functional gap on LCO is 0.62 V (full range) and 0.39 V (x = 1 → 0.5). The original optPBE run's 28% endpoint expansion did not recur with the correct functional. The uniform offset points to a systematic shift (U calibration or Li reference) rather than a deep-delithiation failure.
 
-A larger supercell (3×3×3) and/or hybrid functional (HSE06) would improve the deep-delithiation regime but at significantly higher computational cost.
-
-**Experimental reference:** Reimers & Dahn, *J. Electrochem. Soc.* **139**, 2091 (1992)
+**Experimental references:** Ohzuku & Ueda, *J. Electrochem. Soc.* **141**, 2972 (1994) (plateau OCVs); Tan et al., *Materials* **14**, 242 (2021) (4.2 V cut-off, ~half the theoretical capacity); Reimers & Dahn, *J. Electrochem. Soc.* **139**, 2091 (1992) (0.4 ≤ x ≤ 1 phase diagram).
 
 ---
 
@@ -136,24 +133,25 @@ A larger supercell (3×3×3) and/or hybrid functional (HSE06) would improve the 
 
 | Material | Structure | Functional | Hull plateaus | DFT avg V | Exp avg V | Error |
 |----------|-----------|-----------|---------------|-----------|-----------|-------|
-| LFP | Olivine | PBE+U | 4 (artifact of finite cell; should be 1) | 3.60 V | ~3.42 V | +0.18 V |
+| LFP | Olivine | PBE+U | 4 (artifact of finite cell; should be 1) | 3.60 V | 3.43 V | +0.17 V |
 | LMP | Olivine | PBE+U | N/A (missing x=0) | 3.91 V* | ~4.1 V | −0.19 V |
 | LMO | Spinel | PBE+U | 2 (matches experiment) | 4.08 V | ~4.05 V | +0.03 V |
 | NMC | Layered | PBE+U | 5 (x>0.5 physical, x<0.5 artifact) | 3.93 V† | ~3.7 V | +0.23 V |
-| LCO | Layered | optB88-vdW | 3 (matches experiment) | 4.18 V | ~4.05 V | +0.13 V |
+| LCO | Layered | optB88-vdW | 4; reproduces the measured 0.58 V plateau rise | 4.21 V‡ | ~4.05 V | +0.16 V |
 
 \* Step voltage average (no hull).
 † Average restricted to x > 0.5 (physical regime only).
+‡ Average over x = 1 → 0.5, the experimentally cycled range (full range 4.45 V).
 
 ### Key findings
 
 1. **LMO is the best performer** — hull structure, plateau voltages, and transition compositions all match experiment quantitatively (error < 0.05 V). The spinel framework's high symmetry and well-separated Li ordering transitions are ideal for the supercell approach.
 
-2. **LCO captures staged delithiation** — three hull plateaus correctly reproduce the H1→H2→H3 sequence. Main discharge plateau accurate to +0.06 V; deep-delithiation overestimated due to finite cell size and vdW functional limitations.
+2. **LCO reproduces the shape of the voltage profile** — with the correct optB88-vdW functional, the 0.58 V rise between the two measured two-phase plateaus is reproduced to 0.01 V with a uniform +0.27 V offset; PBE+U is flat and misses it.
 
-3. **LFP reproduces the flat plateau** — the four hull plateaus are clustered within 0.19 V, consistent with a single flat plateau broadened by finite-size effects. Systematic PBE+U overestimate of +0.18 V. The narrow voltage spread confirms the two-phase olivine mechanism.
+3. **LFP reproduces the flat plateau** — the four hull plateaus are clustered within 0.19 V, consistent with a single flat plateau broadened by finite-size effects. Systematic PBE+U overestimate of +0.17 V (vs the 3.43 V two-phase equilibrium, Yamada 2001). The narrow voltage spread confirms the two-phase olivine mechanism.
 
-4. **LMP step_16 is unconvergeable** — fully delithiated Mn⁴⁺ (d³) is pathological for PBE+U. Step voltage average of 3.91 V underestimates experiment by 0.19 V. The missing x=0 endpoint prevents hull analysis but does not affect the practical result — LMP is never fully delithiated experimentally.
+4. **LMP step_16 is unconvergeable** — the fully delithiated MnPO₄ endpoint (Mn³⁺, d⁴) did not converge with PBE+U. Step voltage average of 3.91 V underestimates experiment by 0.19 V. The missing x=0 endpoint prevents hull analysis but does not affect the practical result — LMP is never fully delithiated experimentally.
 
 5. **NMC has a two-regime problem** — physically reasonable at x > 0.5 (~3.93 V, overestimates by ~0.2 V), but the x < 0.5 regime (~4.86 V) is an artifact of oxygen redox activation, wrong functional (PBE instead of optB88-vdW), and ordered cation arrangement. The x > 0.5 average is the publishable result.
 
@@ -161,10 +159,11 @@ A larger supercell (3×3×3) and/or hybrid functional (HSE06) would improve the 
 
 | Functional | Materials | Typical error | Direction |
 |-----------|-----------|--------------|-----------|
-| PBE+U | LFP, LMO | +0.03 to +0.18 V | Overestimates |
+| PBE+U | LFP, LMO | +0.03 to +0.17 V | Overestimates |
 | PBE+U | LMP | −0.19 V | Underestimates (U too low for Mn²⁺/³⁺) |
 | PBE+U | NMC (x>0.5) | +0.23 V | Overestimates (wrong functional for layered) |
-| optB88-vdW | LCO | +0.06 to +0.29 V | Overestimates (increases with delithiation) |
+| optB88-vdW | LCO | +0.26 to +0.28 V | Uniform overestimate across the plateaus |
+| PBE+U | LCO (comparison) | −0.10 to −0.69 V | Flat profile; misses the rise at low Li content |
 
 ---
 

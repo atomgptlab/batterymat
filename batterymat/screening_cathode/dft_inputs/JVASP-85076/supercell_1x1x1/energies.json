@@ -1,0 +1,26 @@
+{
+  "jid": "JVASP-85076",
+  "dim": [
+    1,
+    1,
+    1
+  ],
+  "n_li_total": 1,
+  "functional": "pbe",
+  "layered": false,
+  "e_li_metal": -1.9031,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 1,
+      "energy": -9.50195606,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 0,
+      "energy": -6.25039999,
+      "removed_li_index": 0
+    }
+  ]
+}

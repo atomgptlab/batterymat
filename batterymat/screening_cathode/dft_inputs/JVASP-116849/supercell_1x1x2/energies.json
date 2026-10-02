@@ -1,0 +1,44 @@
+{
+  "jid": "JVASP-116849",
+  "dim": [
+    1,
+    1,
+    2
+  ],
+  "n_li_total": 4,
+  "functional": "optb88vdw",
+  "layered": true,
+  "e_li_metal": -0.9646,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 4,
+      "energy": -150.35908261,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 3,
+      "energy": -144.24718473,
+      "removed_li_index": 0
+    },
+    {
+      "step": 2,
+      "n_li": 2,
+      "energy": -138.42617034,
+      "removed_li_index": 0
+    },
+    {
+      "step": 3,
+      "n_li": 1,
+      "energy": -132.71244444,
+      "removed_li_index": 0
+    },
+    {
+      "step": 4,
+      "n_li": 0,
+      "energy": -127.13886718,
+      "removed_li_index": 0
+    }
+  ]
+}

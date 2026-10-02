@@ -1,0 +1,26 @@
+{
+  "jid": "JVASP-77457",
+  "dim": [
+    1,
+    1,
+    1
+  ],
+  "n_li_total": 1,
+  "functional": "optb88vdw",
+  "layered": true,
+  "e_li_metal": -0.9646,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 1,
+      "energy": 0.5572154,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 0,
+      "energy": 1.93159911,
+      "removed_li_index": 0
+    }
+  ]
+}

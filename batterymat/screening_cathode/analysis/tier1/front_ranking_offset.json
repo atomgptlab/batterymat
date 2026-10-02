@@ -1,0 +1,26 @@
+{
+ "offset_applied_V": 0.633,
+ "n_survivors_tier1_offset": 728,
+ "n_survivors_tier2": 682,
+ "n_common": 640,
+ "jaccard": 0.8311688311688312,
+ "spearman_common": 0.850568086103726,
+ "top12_overlap": 7,
+ "top50_overlap": 26,
+ "top12_tier1_offset": [
+  "JVASP-118606",
+  "JVASP-19051",
+  "JVASP-31181",
+  "JVASP-11735",
+  "JVASP-49957",
+  "JVASP-26796",
+  "JVASP-112917",
+  "JVASP-9699",
+  "JVASP-148139",
+  "JVASP-112912",
+  "JVASP-147246",
+  "JVASP-21456"
+ ],
+ "rank_LCO": 181,
+ "rank_Li3FeO3": null
+}

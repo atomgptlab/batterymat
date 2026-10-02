@@ -1,0 +1,44 @@
+{
+  "jid": "JVASP-117419",
+  "dim": [
+    1,
+    2,
+    1
+  ],
+  "n_li_total": 4,
+  "functional": "pbe",
+  "layered": false,
+  "e_li_metal": -1.9031,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 4,
+      "energy": -377.86707269,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 3,
+      "energy": -372.02718659,
+      "removed_li_index": 3
+    },
+    {
+      "step": 2,
+      "n_li": 2,
+      "energy": -366.73428696,
+      "removed_li_index": 0
+    },
+    {
+      "step": 3,
+      "n_li": 1,
+      "energy": -361.61996217,
+      "removed_li_index": 0
+    },
+    {
+      "step": 4,
+      "n_li": 0,
+      "energy": -356.65291754,
+      "removed_li_index": 0
+    }
+  ]
+}

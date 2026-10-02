@@ -1,0 +1,92 @@
+{
+ "excluded_unconverged": [
+  "JVASP-145960 Li8MnO6",
+  "JVASP-147666 Li7FeO6"
+ ],
+ "converged_all": {
+  "vs_label": {
+   "n": 28,
+   "MAE_V": 0.88,
+   "ME_V": 0.68,
+   "RMSE_V": 1.117,
+   "MAE_bias_removed_V": 0.745,
+   "spearman": 0.899,
+   "window_agreement": "21/28"
+  },
+  "vs_regressor": {
+   "n": 28,
+   "MAE_V": 0.875,
+   "ME_V": 0.847,
+   "RMSE_V": 1.153,
+   "MAE_bias_removed_V": 0.644,
+   "spearman": 0.918,
+   "window_agreement": "19/28"
+  },
+  "members": [
+   "JVASP-156413 LiHgPb",
+   "JVASP-153679 Sr2LiFe2N3",
+   "JVASP-152186 Sr2LiGe3",
+   "JVASP-155665 Li2YSn2",
+   "JVASP-153084 Sr3Li4Si2N6",
+   "JVASP-145396 LiInTe6Mo6",
+   "JVASP-156260 LiAgSn",
+   "JVASP-156275 LiYPb",
+   "JVASP-155457 SrLi2GeS4",
+   "JVASP-155432 Li2SnGeS4",
+   "JVASP-154072 LiInMo3O8",
+   "JVASP-155997 Li2MnRh",
+   "JVASP-145578 LiVCoO4",
+   "JVASP-154963 LiScSi2O6",
+   "JVASP-146076 Li5Mn4O8",
+   "JVASP-145531 Li3V5O12",
+   "JVASP-145589 LiMnVO4",
+   "JVASP-148118 LiTaO3",
+   "JVASP-147478 Li3MnCoO5",
+   "JVASP-147673 LiMn3O6",
+   "JVASP-147554 LiCrCdF6",
+   "JVASP-147470 LiAuS4O14",
+   "JVASP-151060 LiCoF4",
+   "JVASP-153859 Li6PClO5",
+   "JVASP-145831 LiZnRhF6",
+   "JVASP-146008 Li2BF5",
+   "JVASP-147415 Li2VF5",
+   "JVASP-149914 LiBiF6"
+  ]
+ },
+ "converged_redox_metal": {
+  "vs_label": {
+   "n": 14,
+   "MAE_V": 0.544,
+   "ME_V": 0.346,
+   "RMSE_V": 0.69,
+   "MAE_bias_removed_V": 0.428,
+   "spearman": 0.938,
+   "window_agreement": "12/14"
+  },
+  "vs_regressor": {
+   "n": 14,
+   "MAE_V": 0.566,
+   "ME_V": 0.529,
+   "RMSE_V": 0.721,
+   "MAE_bias_removed_V": 0.371,
+   "spearman": 0.978,
+   "window_agreement": "10/14"
+  },
+  "members": [
+   "JVASP-153679 Sr2LiFe2N3",
+   "JVASP-145396 LiInTe6Mo6",
+   "JVASP-154072 LiInMo3O8",
+   "JVASP-155997 Li2MnRh",
+   "JVASP-145578 LiVCoO4",
+   "JVASP-146076 Li5Mn4O8",
+   "JVASP-145531 Li3V5O12",
+   "JVASP-145589 LiMnVO4",
+   "JVASP-147478 Li3MnCoO5",
+   "JVASP-147673 LiMn3O6",
+   "JVASP-147554 LiCrCdF6",
+   "JVASP-151060 LiCoF4",
+   "JVASP-145831 LiZnRhF6",
+   "JVASP-147415 Li2VF5"
+  ]
+ }
+}

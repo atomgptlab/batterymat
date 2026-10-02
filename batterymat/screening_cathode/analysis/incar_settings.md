@@ -10,7 +10,7 @@ Summary of VASP INCAR settings used for all five cathode materials in the sequen
 | LMP (LiMnPO₄) | JVASP-116897 | 2×2×1 | 112 | PBE+U | Mn=3.9 | 2×2×3 | Li_sv, Mn_pv, P, O |
 | LMO (LiMn₂O₄) | JVASP-141792 | 2×2×2 | 112 | PBE+U | Mn=3.9 | 2×2×2 | Li_sv, Mn_pv, O |
 | NMC (Li₄Mn₃Co₂Ni₃O₁₆) | JVASP-144791 | 2×2×1 | 112 | PBE+U | Mn=3.9, Co=3.32, Ni=6.2 | 2×2×3 | Li_sv, Mn_pv, Co, Ni_pv, O |
-| LCO (LiCoO₂) | JVASP-2017 | 2×2×2 | 32 | optB88-vdW+U | Co=3.32 | 2×2×2 | Li_sv, Co, O |
+| LCO (LiCoO₂) | JVASP-2017 | 2×2×2 | 32 | optB88-vdW+U in the reported chain `JVASP-2017-LCO-B88` (the original `JVASP-2017-LCO` chain was optPBE-vdW+U, labelled optB88 until 2026-09-28) | Co=3.32 | 2×2×2 | Li_sv, Co, O |
 
 ## Common Settings (All Materials)
 
@@ -98,15 +98,22 @@ LDAUU =  0  3.32  0
 LDAUJ =  0  0  0
 ```
 
-## optB88-vdW Tags (LCO Only)
+## vdW-DF Tags (layered materials)
 
-Appended to the PBE base INCAR for layered LiCoO₂:
+optB88-vdW (the JARVIS-DFT functional; `dft_prep.py` default for layered materials since 2026-09-28):
 
 ```
-GGA      = OR       # optB88 exchange functional
-LUSE_VDW = .TRUE.   # Enable vdW-DF nonlocal correlation
-AGGAC    = 0.0      # Turn off GGA correlation (replaced by vdW-DF)
+GGA      = BO             # optB88 exchange
+PARAM1   = 0.1833333333
+PARAM2   = 0.2200000000
+LUSE_VDW = .TRUE.         # vdW-DF nonlocal correlation
+AGGAC    = 0.0            # no gradient correction to correlation
 ```
+
+The original LCO chain (`JVASP-2017-LCO/`, 4.18 V) was run with `GGA = OR` + `LUSE_VDW` +
+`AGGAC = 0.0`, which is **optPBE-vdW**, not optB88-vdW (VASP wiki, "Nonlocal vdW-DF
+functionals"). It is kept as `functional = "optpbevdw"`; the true optB88-vdW rerun is
+`JVASP-2017-LCO-B88/`.
 
 ## MAGMOM (Antiferromagnetic Patterns)
 
@@ -150,13 +157,18 @@ Voltage calculations require the energy of metallic Li as a reference. Both use 
 | Functional | E_li_metal (eV/atom) | Directory |
 |-----------|---------------------|-----------|
 | PBE | -1.9031 | `dft_inputs/JVASP-913-Li/Li_sv_PBE/` |
-| optB88-vdW (GGA=OR) | -0.9646 | `dft_inputs/JVASP-913-Li/Li_sv_optB88vdW/` |
+| optB88-vdW (GGA=BO, PARAM1/2) | -0.9778 | `dft_inputs/JVASP-913-Li/Li_sv/static/` (local); confirmation rerun in `Li_sv_optB88vdW/` |
+| optPBE-vdW (GGA=OR) | -0.9646 | `dft_inputs/JVASP-913-Li/Li_sv_optPBEvdW/` |
 
-**Note:** The original optB88-vdW Li reference (`dft_inputs/JVASP-913-Li/Li_sv/`, now removed) was computed with `GGA=BO` (optB86b exchange, -0.9778 eV/atom), while LCO cathode steps use `GGA=OR` (optB88 exchange). A corrected reference with `GGA=OR` gives -0.9646 eV/atom — a 0.013 eV difference. All LCO voltages now use the corrected value.
+**Note (corrected 2026-09-28):** an earlier version of this note called `GGA=BO` "optB86b" and
+`GGA=OR` "optB88". That was backwards: `GGA=BO` with PARAM1 = 0.1833333333, PARAM2 = 0.22 is
+optB88-vdW, `GGA=OR` is optPBE-vdW, and optB86b-vdW is `GGA=MK`. The `Li_sv/` run was the
+correct optB88-vdW reference. The original LCO chain and the -0.9646 reference are a
+consistent optPBE-vdW pair.
 
 ## LMP Step 16 (Abandoned)
 
-The fully delithiated MnPO₄ (step_16, Li₀) required special cold-start settings due to Mn⁴⁺ (d³) convergence pathology. Multiple attempts failed -- the energy was ~200 eV above the expected ground state, indicating a trapped false electronic minimum from near-degenerate magnetic configurations.
+The fully delithiated MnPO₄ (step_16, Li₀) required special cold-start settings due to the convergence difficulty of the fully delithiated MnPO₄ endpoint (Mn³⁺, d⁴). Multiple attempts failed -- the energy was ~200 eV above the expected ground state, indicating a trapped false electronic minimum from near-degenerate magnetic configurations.
 
 Final INCAR attempt:
 ```

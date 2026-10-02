@@ -1,0 +1,346 @@
+{
+ "JVASP-2017-LCO-B88": {
+  "label": "LiCoO2, optB88-vdW+U",
+  "ion": "Li",
+  "z": 1,
+  "functional": "optb88vdw",
+  "mu_metal": -0.9778,
+  "n_total": 8,
+  "recorded": "8->0 of 8",
+  "V_avg_recorded_range": 4.454,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.75,
+    "V": 4.184
+   },
+   {
+    "x_from": 0.75,
+    "x_to": 0.5,
+    "V": 4.234
+   },
+   {
+    "x_from": 0.5,
+    "x_to": 0.25,
+    "V": 4.623
+   },
+   {
+    "x_from": 0.25,
+    "x_to": 0.0,
+    "V": 4.776
+   }
+  ],
+  "unconverged_steps": []
+ },
+ "JVASP-2017-LCO-PBE": {
+  "label": "LiCoO2, PBE+U",
+  "ion": "Li",
+  "z": 1,
+  "functional": "pbe",
+  "mu_metal": -1.9031,
+  "n_total": 8,
+  "recorded": "8->0 of 8",
+  "V_avg_recorded_range": 3.838,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.625,
+    "V": 3.727
+   },
+   {
+    "x_from": 0.625,
+    "x_to": 0.375,
+    "V": 3.798
+   },
+   {
+    "x_from": 0.375,
+    "x_to": 0.0,
+    "V": 3.976
+   }
+  ],
+  "unconverged_steps": []
+ },
+ "JVASP-2017-LCO": {
+  "label": "LiCoO2, optPBE-vdW+U (original run)",
+  "ion": "Li",
+  "z": 1,
+  "functional": "optpbevdw",
+  "mu_metal": -0.9646,
+  "n_total": 8,
+  "recorded": "8->0 of 8",
+  "V_avg_recorded_range": 4.18,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.5,
+    "V": 4.007
+   },
+   {
+    "x_from": 0.5,
+    "x_to": 0.25,
+    "V": 4.234
+   },
+   {
+    "x_from": 0.25,
+    "x_to": 0.0,
+    "V": 4.475
+   }
+  ],
+  "unconverged_steps": []
+ },
+ "JVASP-144791-NMC-vdW": {
+  "label": "NMC cell, optB88-vdW+U",
+  "ion": "Li",
+  "z": 1,
+  "functional": "optb88vdw",
+  "mu_metal": -0.9778,
+  "n_total": 16,
+  "recorded": "16->0 of 16",
+  "V_avg_recorded_range": 4.758,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.875,
+    "V": 4.103
+   },
+   {
+    "x_from": 0.875,
+    "x_to": 0.75,
+    "V": 4.203
+   },
+   {
+    "x_from": 0.75,
+    "x_to": 0.625,
+    "V": 4.343
+   },
+   {
+    "x_from": 0.625,
+    "x_to": 0.5,
+    "V": 4.465
+   },
+   {
+    "x_from": 0.5,
+    "x_to": 0.3125,
+    "V": 5.181
+   },
+   {
+    "x_from": 0.3125,
+    "x_to": 0.25,
+    "V": 5.201
+   },
+   {
+    "x_from": 0.25,
+    "x_to": 0.1875,
+    "V": 5.24
+   },
+   {
+    "x_from": 0.1875,
+    "x_to": 0.125,
+    "V": 5.246
+   },
+   {
+    "x_from": 0.125,
+    "x_to": 0.0625,
+    "V": 5.325
+   },
+   {
+    "x_from": 0.0625,
+    "x_to": 0.0,
+    "V": 5.344
+   }
+  ],
+  "unconverged_steps": []
+ },
+ "JVASP-144791-NMC": {
+  "label": "NMC cell, PBE+U (original run)",
+  "ion": "Li",
+  "z": 1,
+  "functional": "pbe",
+  "mu_metal": -1.9031,
+  "n_total": 16,
+  "recorded": "16->0 of 16",
+  "V_avg_recorded_range": 4.4,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.875,
+    "V": 3.515
+   },
+   {
+    "x_from": 0.875,
+    "x_to": 0.8125,
+    "V": 3.971
+   },
+   {
+    "x_from": 0.8125,
+    "x_to": 0.5625,
+    "V": 4.081
+   },
+   {
+    "x_from": 0.5625,
+    "x_to": 0.5,
+    "V": 4.184
+   },
+   {
+    "x_from": 0.5,
+    "x_to": 0.0,
+    "V": 4.861
+   }
+  ],
+  "unconverged_steps": []
+ },
+ "JVASP-79809-NCO": {
+  "label": "O3-NaCoO2, optB88-vdW+U",
+  "ion": "Na",
+  "z": 1,
+  "functional": "optb88vdw",
+  "mu_metal": 0.9196,
+  "n_total": 8,
+  "recorded": "8->3 of 8",
+  "V_avg_recorded_range": 3.432,
+  "complete": false,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.5,
+    "V": 3.086
+   },
+   {
+    "x_from": 0.5,
+    "x_to": 0.375,
+    "V": 4.818
+   }
+  ],
+  "unconverged_steps": [],
+  "V_avg_exp_range": {
+   "range": "8->4",
+   "V": 3.086
+  }
+ },
+ "JVASP-11340-MMO": {
+  "label": "MgMn2O4, PBE+U",
+  "ion": "Mg",
+  "z": 2,
+  "functional": "pbe",
+  "mu_metal": -1.50576,
+  "n_total": 16,
+  "recorded": "16->0 of 16",
+  "V_avg_recorded_range": 3.237,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.5625,
+    "V": 3.08
+   },
+   {
+    "x_from": 0.5625,
+    "x_to": 0.4375,
+    "V": 3.11
+   },
+   {
+    "x_from": 0.4375,
+    "x_to": 0.25,
+    "V": 3.322
+   },
+   {
+    "x_from": 0.25,
+    "x_to": 0.125,
+    "V": 3.431
+   },
+   {
+    "x_from": 0.125,
+    "x_to": 0.0,
+    "V": 3.596
+   }
+  ],
+  "unconverged_steps": [
+   "step_16_Mg0"
+  ],
+  "V_avg_exp_range": {
+   "range": "16->10",
+   "V": 3.102
+  }
+ },
+ "JVASP-141543-B88": {
+  "label": "Rb2LiFeF6 (A), optB88-vdW+U",
+  "ion": "Li",
+  "z": 1,
+  "functional": "optb88vdw",
+  "mu_metal": -0.9778,
+  "n_total": 2,
+  "recorded": "2->0 of 2",
+  "V_avg_recorded_range": 6.127,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.0,
+    "V": 6.127
+   }
+  ],
+  "unconverged_steps": []
+ },
+ "JVASP-154749-B88": {
+  "label": "Rb2LiFeF6 (B), optB88-vdW+U",
+  "ion": "Li",
+  "z": 1,
+  "functional": "optb88vdw",
+  "mu_metal": -0.9778,
+  "n_total": 2,
+  "recorded": "2->0 of 2",
+  "V_avg_recorded_range": 6.128,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.0,
+    "V": 6.128
+   }
+  ],
+  "unconverged_steps": []
+ },
+ "JVASP-116849-B88": {
+  "label": "LiV2F7, optB88-vdW+U",
+  "ion": "Li",
+  "z": 1,
+  "functional": "optb88vdw",
+  "mu_metal": -0.9778,
+  "n_total": 4,
+  "recorded": "4->0 of 4",
+  "V_avg_recorded_range": 4.918,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.0,
+    "V": 4.918
+   }
+  ],
+  "unconverged_steps": []
+ },
+ "JVASP-77457-B88": {
+  "label": "LiCa2Ag, optB88-vdW",
+  "ion": "Li",
+  "z": 1,
+  "functional": "optb88vdw",
+  "mu_metal": -0.9778,
+  "n_total": 1,
+  "recorded": "1->0 of 1",
+  "V_avg_recorded_range": 0.446,
+  "complete": true,
+  "hull": [
+   {
+    "x_from": 1.0,
+    "x_to": 0.0,
+    "V": 0.446
+   }
+  ],
+  "unconverged_steps": []
+ }
+}

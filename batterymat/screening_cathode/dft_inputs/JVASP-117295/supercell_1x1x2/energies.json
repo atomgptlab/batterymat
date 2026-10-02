@@ -1,0 +1,164 @@
+{
+ "jid": "JVASP-117295",
+ "dim": [
+  1,
+  1,
+  2
+ ],
+ "n_li_total": 24,
+ "functional": "pbe",
+ "layered": false,
+ "e_li_metal": -1.9031,
+ "steps": [
+  {
+   "step": 0,
+   "n_li": 24,
+   "energy": -306.46278708,
+   "removed_li_index": null
+  },
+  {
+   "step": 1,
+   "n_li": 23,
+   "energy": -300.69900975,
+   "removed_li_index": 6
+  },
+  {
+   "step": 2,
+   "n_li": 22,
+   "energy": -295.10202307,
+   "removed_li_index": 18
+  },
+  {
+   "step": 3,
+   "n_li": 21,
+   "energy": -289.45441891,
+   "removed_li_index": 4
+  },
+  {
+   "step": 4,
+   "n_li": 20,
+   "energy": -284.184745,
+   "removed_li_index": 14
+  },
+  {
+   "step": 5,
+   "n_li": 19,
+   "energy": -278.09555941,
+   "removed_li_index": 15
+  },
+  {
+   "step": 6,
+   "n_li": 18,
+   "energy": -272.50107403,
+   "removed_li_index": 14
+  },
+  {
+   "step": 7,
+   "n_li": 17,
+   "energy": -266.44035175,
+   "removed_li_index": 7
+  },
+  {
+   "step": 8,
+   "n_li": 16,
+   "energy": -260.70859198,
+   "removed_li_index": 4
+  },
+  {
+   "step": 9,
+   "n_li": 15,
+   "energy": -254.5999829,
+   "removed_li_index": 3
+  },
+  {
+   "step": 10,
+   "n_li": 14,
+   "energy": -248.16650797,
+   "removed_li_index": 5
+  },
+  {
+   "step": 11,
+   "n_li": 13,
+   "energy": -241.81439341,
+   "removed_li_index": 3
+  },
+  {
+   "step": 12,
+   "n_li": 12,
+   "energy": -235.44118213,
+   "removed_li_index": 0
+  },
+  {
+   "step": 13,
+   "n_li": 11,
+   "energy": -229.30967659,
+   "removed_li_index": 10
+  },
+  {
+   "step": 14,
+   "n_li": 10,
+   "energy": -223.17405711,
+   "removed_li_index": 7
+  },
+  {
+   "step": 15,
+   "n_li": 9,
+   "energy": -216.80409,
+   "removed_li_index": 5
+  },
+  {
+   "step": 16,
+   "n_li": 8,
+   "energy": -210.40766,
+   "removed_li_index": null
+  },
+  {
+   "step": 17,
+   "n_li": 7,
+   "energy": -203.67538,
+   "removed_li_index": null
+  },
+  {
+   "step": 18,
+   "n_li": 6,
+   "energy": -197.51724,
+   "removed_li_index": null
+  },
+  {
+   "step": 19,
+   "n_li": 5,
+   "energy": -190.82458,
+   "removed_li_index": null
+  },
+  {
+   "step": 20,
+   "n_li": 4,
+   "energy": -183.98677,
+   "removed_li_index": null
+  },
+  {
+   "step": 21,
+   "n_li": 3,
+   "energy": -177.1155,
+   "removed_li_index": null
+  },
+  {
+   "step": 22,
+   "n_li": 2,
+   "energy": -170.15533,
+   "removed_li_index": null
+  },
+  {
+   "step": 23,
+   "n_li": 1,
+   "energy": -163.01818,
+   "removed_li_index": null
+  },
+  {
+   "step": 24,
+   "n_li": 0,
+   "energy": -158.58057,
+   "removed_li_index": null
+  }
+ ]
+}

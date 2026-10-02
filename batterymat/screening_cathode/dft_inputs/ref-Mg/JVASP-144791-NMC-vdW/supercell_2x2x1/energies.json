@@ -1,0 +1,21 @@
+{
+  "jid": "JVASP-144791",
+  "dim": [
+    2,
+    2,
+    1
+  ],
+  "n_li_total": 16,
+  "functional": "optb88vdw",
+  "layered": false,
+  "e_li_metal": -0.9778,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 16,
+      "energy": null,
+      "removed_li_index": null
+    }
+  ],
+  "tag": "NMC-vdW"
+}

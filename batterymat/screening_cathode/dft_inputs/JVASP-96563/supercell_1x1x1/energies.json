@@ -1,0 +1,68 @@
+{
+  "jid": "JVASP-96563",
+  "dim": [
+    1,
+    1,
+    1
+  ],
+  "n_li_total": 8,
+  "functional": "pbe",
+  "layered": false,
+  "e_li_metal": -1.9031,
+  "steps": [
+    {
+      "step": 0,
+      "n_li": 8,
+      "energy": -370.2337774,
+      "removed_li_index": null
+    },
+    {
+      "step": 1,
+      "n_li": 7,
+      "energy": -362.91725967,
+      "removed_li_index": 4
+    },
+    {
+      "step": 2,
+      "n_li": 6,
+      "energy": -355.74089516,
+      "removed_li_index": 6
+    },
+    {
+      "step": 3,
+      "n_li": 5,
+      "energy": -348.54616629,
+      "removed_li_index": 0
+    },
+    {
+      "step": 4,
+      "n_li": 4,
+      "energy": -341.4141021,
+      "removed_li_index": 4
+    },
+    {
+      "step": 5,
+      "n_li": 3,
+      "energy": -334.01134966,
+      "removed_li_index": 0
+    },
+    {
+      "step": 6,
+      "n_li": 2,
+      "energy": -326.75945759,
+      "removed_li_index": 2
+    },
+    {
+      "step": 7,
+      "n_li": 1,
+      "energy": -319.54501275,
+      "removed_li_index": 1
+    },
+    {
+      "step": 8,
+      "n_li": 0,
+      "energy": -312.28890056,
+      "removed_li_index": 0
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "jid": "JVASP-79809",
+  "ion": "Na",
+  "z": 1,
+  "dim": [
+    2,
+    2,
+    2
+  ],
+  "n_ion_total": 8,
+  "functional": "optb88vdw",
+  "layered": true,
+  "e_ion_metal": null,
+  "steps": [
+    {
+      "step": 0,
+      "n_ion": 8,
+      "energy": null,
+      "removed_ion_index": null
+    }
+  ],
+  "tag": "NCO"
+}
