@@ -28,7 +28,7 @@ lim = [np.floor(min(y.min(), yhat.min())) - 0.5, np.ceil(max(y.max(), yhat.max()
 
 fig, ax = plt.subplots(figsize=(6.2, 6.2))
 ax.plot(lim, lim, ls="--", color=GRAY, lw=1.6, label="y = x", zorder=1)
-ax.axhline(y.mean(), ls=":", color=ORANGE, lw=2.0, label=f"dataset mean ({y.mean():.2f} V)", zorder=1)
+ax.axhline(y.mean(), ls=":", color=ORANGE, lw=2.0, label=f"test-set mean ({y.mean():.2f} V)", zorder=1)
 ax.scatter(y, yhat, s=18, color=BLUE, alpha=0.6, edgecolors="none", label=f"held-out test (n = {len(y)})", zorder=2)
 ax.set_xlim(lim); ax.set_ylim(lim); ax.set_aspect("equal")
 ax.set_xlabel("ALIGNN-FF average voltage (V)")

@@ -41,14 +41,14 @@ fig, axes = plt.subplots(1, 2, figsize=(13, 5.4))
 ax = axes[0]
 ax.plot(ep, trl, color=BLUE, lw=2, label="train (summed over batches)")
 ax.plot(ep, val, color=ORANGE, lw=2, label="validation (summed over batches)")
-ax.set_yscale("log"); ax.set_xlabel("Epoch"); ax.set_ylabel("MSE loss, summed over batches")
+ax.set_yscale("log"); ax.set_xlabel("Epoch"); ax.set_ylabel("L1 loss, summed over batches (V)")
 ax.set_title("Summed over batches (as logged)")
 ax.legend(frameon=False)
 ax = axes[1]
 ax.plot(ep, trn, color=BLUE, lw=2, label=f"train ({n_tr_batches} batches/epoch)")
 ax.plot(ep, van, color=ORANGE, lw=2, label=f"validation ({n_va_batches} batches/epoch)")
 ax.axvline(best, color="#52514e", lw=1.2, ls="--")
-ax.set_yscale("log"); ax.set_xlabel("Epoch"); ax.set_ylabel("Mean MSE per batch (V²)")
+ax.set_yscale("log"); ax.set_xlabel("Epoch"); ax.set_ylabel("Mean L1 loss per batch (V)")
 ax.set_title(f"Per-batch; best val at epoch {best}")
 ax.legend(frameon=False)
 for a in axes:

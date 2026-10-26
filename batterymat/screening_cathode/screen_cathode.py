@@ -19,7 +19,8 @@ FILTERS = {
 }
 
 # Redox-active transition metals accepted as the charge-compensating species.
-# Same criterion as stage 1 of the Alexandria funnel; it removes Li-rich
+# Narrower than the 27-element d-block list of stage 1 of the Alexandria
+# funnel; it removes Li-rich
 # electrolyte-like hosts (e.g. Li14P2N6O3, Li2CN2) whose ALIGNN-FF
 # delithiation voltage is not a cathode voltage.
 REDOX_METALS = {"Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu",

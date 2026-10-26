@@ -24,7 +24,7 @@ for ax, (d, title) in zip(axes, MATS):
     ax.set_title(title, fontsize=12)
     ax.set_axis_off()
 axes[-1].set_axis_off()
-axes[-1].text(0.0, 0.5, "Colours follow the jmol convention:\nLi violet, O red, P orange,\nFe brown, Mn purple, Co pink, Ni green.\nStep-0 (fully lithiated) supercells\nas written by dft_prep init.", fontsize=13, va="center")
+axes[-1].text(0.0, 0.5, "Colors follow the jmol convention:\nLi violet, O red, P orange,\nFe brown, Mn purple, Co pink, Ni green.\nStep-0 (fully lithiated) supercells\nas written by dft_prep init.", fontsize=13, va="center")
 fig.tight_layout()
 out = os.path.join(HERE, "benchmark_structures.png")
 fig.savefig(out, dpi=300)

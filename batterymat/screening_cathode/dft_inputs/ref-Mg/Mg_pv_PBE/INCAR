@@ -14,4 +14,4 @@ LREAL  = .FALSE.
 LASPH  = .TRUE.
 LMAXMIX = 4
 ISYM   = 0
-NCORE  = 4
+NCORE  = 2
