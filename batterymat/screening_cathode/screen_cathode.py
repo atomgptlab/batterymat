@@ -12,7 +12,7 @@ import numpy as np
 FILTERS = {
     "avg_voltage_min": 3.0,
     "avg_voltage_max": 4.5,
-    "q_grav_min": 100.0,   # mAh/g, theoretical per formula unit (Goodenough & Park 2013)
+    "q_grav_min": 100.0,   # mAh/g, theoretical per formula unit (Li, Shen & Persson, Energy Adv. 2024)
     "ehull_max": 0.05,
     "max_voltage_max": 5.5,
     "require_redox_metal": True,

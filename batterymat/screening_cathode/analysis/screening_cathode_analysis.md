@@ -28,30 +28,31 @@ The key observation is that all four plateaus are clustered within a narrow 0.19
 
 The slight upward slope from 3.48 V (high x) to 3.67 V (low x) reflects stronger Fe-Fe interactions at low Li content in the finite supercell — in the thermodynamic limit, these would average out to the single ~3.4 V plateau.
 
-**Experimental reference:** Padhi, Nanjundaswamy & Goodenough, *J. Electrochem. Soc.* **144**, 1188 (1997). Reports ~3.5 V vs Li for reversible Li extraction/insertion. Subsequent optimized materials consistently show 3.40–3.45 V at low C-rate.
+**Experimental references:** Padhi, Nanjundaswamy & Goodenough, *J. Electrochem. Soc.* **144**, 1188 (1997): reversible Li extraction/insertion at 3.5 V. Yamada, Chung & Hinokuma, *J. Electrochem. Soc.* **148**, A224 (2001): flat two-phase plateau at 3.4 V. The 3.43 V reference is the two-phase equilibrium potential from GITT, Kondo, Sasaki, Barai & Srinivasan, *J. Electrochem. Soc.* **165**, A2047 (2018).
 
 ---
 
 ## LMP (LiMnPO₄, olivine, PBE+U)
 
-**16/17 steps complete (Li₁₆→Li₁). Step 16 (Li₀, the fully delithiated MnPO₄ endpoint: Mn³⁺, high-spin d⁴) abandoned — did not converge.**
+**17/17 steps complete (Li₁₆→Li₀).** The fully delithiated endpoint (MnPO₄, Mn³⁺ high-spin d⁴) was rerun on 2026-10-26 (`dft_inputs/extra_2026-10-26/LMP-Li0/`): the earlier attempts had used the step-15 POTCAR (Li_sv, Mn_pv, P) on a Mn, P, O cell (NELECT 576 instead of 672), which is why that run sat ~190 eV above the expected energy. With the correct POTCAR it converged in 46 ionic steps (Mn ±3.97 μB, O ≤ 0.07 μB).
 
-No convex hull computed — requires both x=1 and x=0 endpoints.
+Step 0 converged in the block AFM order, steps 1–16 in the per-atom alternating order. Step 0 was recomputed in the alternating order (`extra_2026-10-26/LMP-Li16-altmag/`): 0.161 eV per cell lower. `energies.json` uses that value (the block-order energy is kept as `energy_block_order`).
 
-| Metric | Value |
-|--------|-------|
-| Step voltage range | 3.23–4.34 V |
-| Step voltage average | 3.91 V |
-| Experimental plateau | ~4.1 V |
-| Difference | −0.19 V |
+| Plateau | x_Li range | DFT Hull |
+|---------|-----------|----------|
+| 1 | 0.75 → 1.0 | 3.63 V |
+| 2 | 0.69 → 0.75 | 3.65 V |
+| 3 | 0.56 → 0.69 | 3.79 V |
+| 4 | 0.50 → 0.56 | 3.86 V |
+| 5 | 0.44 → 0.50 | 3.98 V |
+| 6 | 0.25 → 0.44 | 4.13 V |
+| 7 | 0.19 → 0.25 | 4.21 V |
+| 8 | 0 → 0.19 | 4.24 V |
+| **Weighted avg** | **0 → 1.0** | **3.93 V** (exp ~4.1 V, −0.17 V) |
 
-**Discussion:** Without the x=0 endpoint, only raw step voltages are available. The average of 3.91 V underestimates the experimental ~4.1 V by 0.19 V. This is the opposite sign from LFP (which overestimates) — a known issue with PBE+U on Mn²⁺/Mn³⁺ olivines, where U(Mn)=3.9 eV may be slightly too low to fully localize the Mn d-electrons.
+**Discussion:** the average underestimates the experimental ~4.1 V plateau by 0.17 V, the opposite sign from LFP (+0.17 V) under the same Materials Project U calibration; consistent with the oxide-fitted U being too small for Mn (and too large for Fe) in the phosphates. Like LFP, LMP is a two-phase system with a single flat plateau experimentally; the finite supercell splits it into several narrow hull plateaus. With the block-order step 0 the average would be 3.92 V.
 
-The step_16 (fully delithiated MnPO₄) failed to converge despite multiple attempts with different INCAR settings (ALGO=All, cold start, gentler mixing). The energy oscillated ~200 eV above the expected ground state, trapped in a false electronic minimum. This is a convergence difficulty of the Jahn–Teller-active Mn³⁺ (d⁴) endpoint in PBE+U — the many near-degenerate magnetic configurations create an extremely rugged energy landscape. The fully delithiated state is not experimentally accessible anyway — LMP operates as a flat two-phase system and is never cycled to x=0.
-
-Like LFP, LMP is expected to show a single flat plateau (first-order LiMnPO₄ ↔ MnPO₄ phase transition). The hull, if computable, would likely show the same finite-size splitting into multiple narrow plateaus near 4.1 V.
-
-**Experimental references:** Li, Azuma & Tohda, *Electrochem. Solid-State Lett.* **5**, A135 (2002); Delacourt et al., *Chem. Mater.* **16**, 93 (2004)
+**Experimental references:** ~4.1 V plateau: Padhi, Nanjundaswamy & Goodenough, *J. Electrochem. Soc.* **144**, 1188 (1997) (Mn³⁺/Mn²⁺ at 4.1 V); Aravindan, Gnanaraj, Lee & Madhavi, *J. Mater. Chem. A* **1**, 3518 (2013). Two-phase mechanism: Delacourt et al., *Chem. Mater.* **16**, 93 (2004); Li, Azuma & Tohda, *Electrochem. Solid-State Lett.* **5**, A135 (2002)
 
 ---
 
@@ -59,52 +60,37 @@ Like LFP, LMP is expected to show a single flat plateau (first-order LiMnPO₄ �
 
 **17/17 steps complete (Li₁₆→Li₀).**
 
-| Plateau | x_Li range | DFT Hull | Experiment | Difference |
-|---------|-----------|----------|------------|------------|
-| Upper | 0 → 0.44 | 4.17 V | ~4.13 V | +0.04 V |
-| Lower | 0.44 → 1.0 | 4.00 V | ~3.95 V | +0.05 V |
-| **Weighted avg** | **0 → 1.0** | **4.08 V** | **~4.05 V** | **+0.03 V** |
+| Plateau | x_Li range | DFT Hull | Experiment (open circuit) | Difference |
+|---------|-----------|----------|---------------------------|------------|
+| Upper | 0 → 0.44 | 4.17 V | 4.11 V (two cubic phases, 0.27 < x < 0.60) | +0.06 V |
+| Lower | 0.44 → 1.0 | 4.00 V | 3.94 V (midpoint of the one-phase region, 0.60 < x < 1) | +0.06 V |
+| **Weighted avg** | **0 → 1.0** | **4.08 V** | **4.04 V** | **+0.04 V** |
 
-**Discussion:** Excellent agreement — both plateaus within ~0.05 V of experiment. The two-step structure near 4 V is correctly reproduced, with the voltage step at x≈0.44 matching the known Li ordering transition at half-filling of the tetrahedral 8a sites in the spinel framework.
+**Discussion:** The hull reproduces the two-step 4 V profile of the spinel, with both plateaus about 0.06 V above the measured open-circuit values. The computed step lies at x = 0.44, the measured one near x = 0.60. The experimental average weights the open-circuit voltage by composition, with the 4.11 V plateau taken to extend from x = 0.27 (the lowest measured composition) to x = 0: (0.60 × 4.11 + 0.40 × 3.94) / 1.0 = 4.04 V.
 
-The upper plateau (4.17 V) corresponds to delithiation from x=0.44 to x=0, where Mn³⁺→Mn⁴⁺ oxidation occurs in a cooperative Jahn-Teller distorted environment. The lower plateau (4.00 V) corresponds to x=1.0 to x=0.44, where Mn³⁺/Mn⁴⁺ mixed valence gives way to predominantly Mn⁴⁺. The 0.17 V step between plateaus reflects the ordering energy of the Li sublattice at x=0.5.
-
-This is the best-performing material in our study — the hull structure, plateau voltages, and transition composition all match experiment quantitatively. The 2×2×2 supercell (16 Li in spinel 8a sites) provides sufficient configurational freedom to resolve the half-filling transition.
-
-**Experimental reference:** Ohzuku, Kitagawa & Hirai, *J. Electrochem. Soc.* **137**, 769 (1990)
+**Experimental references:** Ohzuku, Kitagawa & Hirai, *J. Electrochem. Soc.* **137**, 769 (1990) (open-circuit voltage 5 h after each 3 h current step: "4.110(5) V for 0.27(2) < x < 0.60(3)", "S-shaped OCV curve [mid-point, 3.94(1) V] for 0.60(3) < x < 1.0"); Tomon et al., *Commun. Chem.* **5**, 54 (2022) (galvanostatic, "two distinct plateaus at around 4.0 and 4.15 V").
 
 ---
 
-## NMC (Li₄Mn₃Co₂Ni₃O₁₆, layered, PBE+U)
+## NMC (Li₄Mn₃Co₂Ni₃O₁₆, layered variant, PBE+U)
 
-**17/17 steps complete (Li₁₆→Li₀).**
+**17/17 steps complete (Li₁₆→Li₀).** JARVIS-DFT stores JVASP-144791 as *P*1, so the spacegroup rule routes it to PBE+U; that chain is the benchmark value.
 
-| Plateau | x_Li range | DFT Hull | Experiment (NMC-111) | Difference |
-|---------|-----------|----------|---------------------|------------|
-| 1 | 0.88 → 1.0 | 3.52 V | ~3.5 V | ~0 V |
-| 2 | 0.81 → 0.88 | 3.97 V | ~3.6 V | +0.37 V |
-| 3 | 0.56 → 0.81 | 4.08 V | ~3.7 V | +0.38 V |
-| 4 | 0.50 → 0.56 | 4.18 V | ~3.8 V | +0.38 V |
-| 5 | 0 → 0.50 | 4.86 V | not accessible | artifact |
-| **Avg (x>0.5)** | **0.50 → 1.0** | **3.93 V** | **~3.6–3.7 V** | **+0.23–0.33 V** |
-| **Avg (all)** | **0 → 1.0** | **4.40 V** | **~3.7 V** | **+0.70 V** |
+Per transition metal the cell runs from Li₀.₅TMO₂ (x = 1) to TMO₂ (x = 0), the upper half of the lithium range of NMC-111. The reference is therefore the measured open-circuit voltage of NMC-111 over that same half, not the average over the usual cycling window, which starts from full lithiation.
 
-**Discussion:** NMC shows a clear two-regime behavior in the DFT voltage curve:
+| Cell range | Li per TM | DFT (PBE+U, fixed cell) | Experiment (NMC-111 open circuit) | Difference |
+|-----------|-----------|-------------------------|-----------------------------------|------------|
+| x = 1 → 0.5 | 0.5 → 0.25 | 3.94 V | 4.19 V | −0.25 V |
+| x = 0.5 → 0 | 0.25 → 0 (measured to 0.03) | 4.86 V | 4.58 V | +0.28 V |
+| **x = 1 → 0** | **0.5 → 0 (measured to 0.03)** | **4.40 V** | **4.37 V** | **+0.03 V** |
 
-**Regime 1 (x > 0.5, plateaus 1–4):** Voltages of 3.52–4.18 V are physically reasonable. The first plateau (3.52 V) involves initial Ni²⁺→Ni³⁺ oxidation; subsequent plateaus at 3.97–4.18 V reflect mixed Ni³⁺→Ni⁴⁺ and Co³⁺→Co⁴⁺ redox. The average of ~3.93 V overestimates the experimental ~3.6–3.7 V by 0.2–0.3 V, which is a typical PBE+U systematic error.
+Hull plateaus: 3.52 V (x 1 → 0.88), 3.97 V (0.88 → 0.81), 4.08 V (0.81 → 0.56), 4.18 V (0.56 → 0.50), 4.86 V (0.50 → 0).
 
-**Regime 2 (x < 0.5, plateau 5):** The 4.86 V plateau spanning the entire lower half of the composition range is almost certainly a DFT artifact. Several factors contribute:
+**Discussion:** The averages agree, but only because the first half is 0.25 V low and the second half 0.28 V high: the computed rise between the halves (0.92 V) is more than twice the measured one (0.39 V). The excess rise appears in all four variants (`JVASP-144791-NMC-vdW/` and the cell-relaxed endpoints in `dft_inputs/extra_2026-10-01/`): optB88-vdW+U with fixed cell 4.28 / 5.24 / 4.76 V, PBE+U with relaxed endpoints 3.73 / 4.63 / 4.18 V, optB88-vdW+U with relaxed endpoints 4.02 / 4.88 / 4.45 V (x = 1 → 0.5 / 0.5 → 0 / 1 → 0). So it is not the dispersion treatment or the cell constraint. Whether it is a GGA+U artifact of the most oxidized states would need a hybrid-functional or meta-GGA calculation of the x = 1, 0.5 and 0 compositions.
 
-1. **Oxygen redox activation:** Below x=0.5, DFT+U frequently predicts charge compensation via O²⁻ oxidation, producing anomalously high voltages. Experimentally, this manifests as irreversible capacity loss and "voltage fade," not a stable 5 V plateau.
-2. **Wrong functional:** This material is layered (R-3m, spacegroup 166) and should use optB88-vdW, but was initialized with PBE before auto-detection was implemented. PBE overestimates interlayer spacing, distorting the delithiation energetics at deep Li removal.
-3. **Cation ordering artifact:** The JARVIS structure has an ordered Mn/Co/Ni sublattice. Real NMC has a disordered TM layer. Ordered arrangements create artificial high-voltage configurations at specific compositions.
-4. **Multi-component U calibration:** Per-element U values (Mn=3.9, Co=3.32, Ni=6.2 eV) were calibrated separately for binary oxides and may not transfer accurately to a ternary layered system.
+Over the usual cycling window, from full lithiation (Li 1 → about 0.4 per TM), NMC-111 averages 3.85 V. The original submission compared the cell with ~3.7 V over that window, which the cell does not cover; that is where its +0.70 V residual came from.
 
-**Experimental context:** Standard NMC compositions (NMC-111 through NMC-811) show sloping S-shaped discharge curves at 3.5–4.3 V, not flat plateaus. The stoichiometry Li₄Mn₃Co₂Ni₃O₁₆ (Mn:Co:Ni = 3:2:3, ≈ NMC-334) has no direct experimental equivalent. In Mn-rich NMC, Mn⁴⁺ is electrochemically inactive below ~4.5 V; the active redox couples are Ni²⁺/Ni⁴⁺ and Co³⁺/Co⁴⁺ only.
-
-**Recommendation:** The voltage curve for x > 0.5 (avg ~3.93 V) is the physically meaningful result. The x < 0.5 regime should be disregarded or flagged as an artifact in any publication.
-
-**General NMC references:** Noh, Youn, Yoon & Sun, *J. Power Sources* **233**, 121 (2013); Manthiram, Knight, Myung, Oh & Sun, *Adv. Energy Mater.* **6**, 1501010 (2016)
+**Experimental references:** Yabuuchi & Ohzuku, 206th Meeting of The Electrochemical Society, Abstract 324 (2004), https://www.electrochem.org/dl/ma/206/pdfs/0324.pdf. Its Fig. 3 gives open-circuit voltages from intermittent charge (1 h on, 5 h off) up to 4.71 V, reached at Li₀.₀₃ by charge count. The values above are integrated from the figure's data series, with Li content = 1 − Q / 277.85 mAh/g. Because composition is counted from charge, side reactions above about 4.5 V make the deepest compositions look more delithiated than they are. Yoshizawa & Ohzuku, *Electrochemistry* **71**, 1177 (2003) report "average discharge voltage of 3.85 V for the cell operation in 3.00–4.45 V" at C/10.
 
 ---
 
@@ -112,20 +98,20 @@ This is the best-performing material in our study — the hull structure, platea
 
 **Reported run: `JVASP-2017-LCO-B88` (true optB88-vdW: GGA=BO, PARAM1=0.1833333333, PARAM2=0.22), 9/9 steps converged, no manual intervention.** The run in the original submission (`JVASP-2017-LCO`) used GGA=OR, which is optPBE-vdW, not optB88-vdW; it is kept for comparison only.
 
-Experimentally LiCoO₂ is cycled only to about x = 0.5 (4.2 V charge cut-off), so the benchmark compares the DFT average over x = 1 → 0.5. The measured open-circuit voltage is flat at 3.92 V for 3/4 < x < 1 and at 4.50 V for 0 < x < 1/4 (Ohzuku & Ueda 1994); over x = 1 → 0.5 it rises from 3.92 V toward the 4.2 V cut-off, and the midpoint, ~4.05 V, is used as the reference.
+Experimentally LiCoO₂ is cycled only to about x = 0.5 (4.2 V charge cut-off), so the benchmark compares the DFT average over x = 1 → 0.5. The measured open-circuit voltage is flat at 3.92 V for 3/4 < x < 1 and at 4.50 V for 0 < x < 1/4 (Ohzuku & Ueda 1994). Over x = 1 → 0.5 it stays at 3.92 V down to x ≈ 0.74 and then rises to 4.20 V at x = 0.5. Weighted by composition (from the digitized curve, uncertainty about 0.02 V) it averages 3.97 V, which is the reference. The original submission used 4.05 V, the midpoint of 3.92 and 4.2 V, which is not a weighted average.
 
 | Range | Experiment | optB88-vdW+U | PBE+U (same cell) | optPBE-vdW+U (original run) |
 |-------|-----------|--------------|-------------------|-----------------------------|
 | 3/4 < x < 1 (two-phase plateau) | 3.92 V | 4.18 V (+0.26) | 3.82 V (−0.10) | 4.18 V |
-| x = 1 → 0.5 (cycled range) | ~4.05 V (3.92–4.2) | **4.21 V (+0.16)** | 3.81 V | 4.01 V |
+| x = 1 → 0.5 (cycled range) | 3.97 V | **4.21 V (+0.24)** | 3.81 V (−0.16) | 4.01 V |
 | 0 < x < 1/4 (two-phase plateau) | 4.50 V | 4.78 V (+0.28) | 3.81 V (−0.69) | 4.47 V |
 | Full range x = 1 → 0 | n/a | 4.45 V | 3.84 V | 4.18 V |
 
 Hull plateaus (optB88): 4.18 / 4.23 / 4.62 / 4.78 V. Cell volume within 1% of the lithiated cell down to x = 3/8, then contracts gradually to −6.4% at CoO₂ (no blow-up).
 
-**Discussion:** optB88-vdW+U reproduces the 0.58 V rise between the two experimental two-phase plateaus to within 0.01 V, with a uniform offset of about +0.27 V. PBE+U on the same supercell is flat (3.81–3.82 V) and misses the rise, and its cell expands by 3.5% on delithiation instead of contracting: without dispersion the interlayer binding of the Li-poor states is wrong, which is the case for routing layered hosts to the vdW functional. The functional gap on LCO is 0.62 V (full range) and 0.39 V (x = 1 → 0.5). The original optPBE run's 28% endpoint expansion did not recur with the correct functional. The uniform offset points to a systematic shift (U calibration or Li reference) rather than a deep-delithiation failure.
+**Discussion:** optB88-vdW+U reproduces the 0.58 V rise between the two experimental two-phase plateaus to within 0.02 V, with a nearly uniform offset of +0.26 to +0.28 V, and the +0.24 V residual over the cycled range matches that offset. PBE+U on the same supercell is flat (3.81–3.82 V) and misses the rise, and its cell expands by 3.5% on delithiation instead of contracting: without dispersion the interlayer binding of the Li-poor states is wrong, which is the case for routing layered hosts to the vdW functional. The functional gap on LCO is 0.62 V (full range) and 0.39 V (x = 1 → 0.5). The original optPBE run's 28% endpoint expansion did not recur with the correct functional. The uniform offset points to a systematic shift (U calibration or Li reference) rather than a deep-delithiation failure.
 
-**Experimental references:** Ohzuku & Ueda, *J. Electrochem. Soc.* **141**, 2972 (1994) (plateau OCVs); Tan et al., *Materials* **14**, 242 (2021) (4.2 V cut-off, ~half the theoretical capacity); Reimers & Dahn, *J. Electrochem. Soc.* **139**, 2091 (1992) (0.4 ≤ x ≤ 1 phase diagram).
+**Experimental references:** Ohzuku & Ueda, *J. Electrochem. Soc.* **141**, 2972 (1994) (open-circuit voltages 10 h after each 2 h current step: "constant at 3.92 V in the range between 0 and 70 mAh·g⁻¹", 4.20 V at Li₁/₂CoO₂; source of the composition-weighted 3.97 V); Tan et al., *Materials* **14**, 242 (2021) (4.2 V cut-off, ~half the theoretical capacity); Reimers & Dahn, *J. Electrochem. Soc.* **139**, 2091 (1992) (0.4 ≤ x ≤ 1 phase diagram).
 
 ---
 
@@ -134,35 +120,36 @@ Hull plateaus (optB88): 4.18 / 4.23 / 4.62 / 4.78 V. Cell volume within 1% of th
 | Material | Structure | Functional | Hull plateaus | DFT avg V | Exp avg V | Error |
 |----------|-----------|-----------|---------------|-----------|-----------|-------|
 | LFP | Olivine | PBE+U | 4 (artifact of finite cell; should be 1) | 3.60 V | 3.43 V | +0.17 V |
-| LMP | Olivine | PBE+U | N/A (missing x=0) | 3.91 V* | ~4.1 V | −0.19 V |
-| LMO | Spinel | PBE+U | 2 (matches experiment) | 4.08 V | ~4.05 V | +0.03 V |
-| NMC | Layered | PBE+U | 5 (x>0.5 physical, x<0.5 artifact) | 3.93 V† | ~3.7 V | +0.23 V |
-| LCO | Layered | optB88-vdW | 4; reproduces the measured 0.58 V plateau rise | 4.21 V‡ | ~4.05 V | +0.16 V |
+| LMP | Olivine | PBE+U | 8 (finite-cell splitting of one plateau) | 3.93 V | ~4.1 V | −0.17 V |
+| LMO | Spinel | PBE+U | 2 (measured profile has two steps) | 4.08 V | 4.04 V | +0.04 V |
+| NMC | Layered | PBE+U | 5 | 4.40 V† | 4.37 V† | +0.03 V (−0.25 / +0.28 by half) |
+| LCO | Layered | optB88-vdW | 4; reproduces the measured 0.58 V plateau rise | 4.21 V‡ | 3.97 V‡ | +0.24 V |
 
-\* Step voltage average (no hull).
-† Average restricted to x > 0.5 (physical regime only).
+† Over Li₀.₅ → Li₀ per transition metal, the range the cell covers (experiment to Li₀.₀₃).
 ‡ Average over x = 1 → 0.5, the experimentally cycled range (full range 4.45 V).
 
 ### Key findings
 
-1. **LMO is the best performer** — hull structure, plateau voltages, and transition compositions all match experiment quantitatively (error < 0.05 V). The spinel framework's high symmetry and well-separated Li ordering transitions are ideal for the supercell approach.
+1. **All five averages are within 0.25 V of experiment**, each compared over the lithium range its cell covers or over which it is cycled.
 
-2. **LCO reproduces the shape of the voltage profile** — with the correct optB88-vdW functional, the 0.58 V rise between the two measured two-phase plateaus is reproduced to 0.01 V with a uniform +0.27 V offset; PBE+U is flat and misses it.
+2. **LCO reproduces the shape of the voltage profile.** With the correct optB88-vdW functional, the 0.58 V rise between the two measured two-phase plateaus is reproduced to within 0.02 V at a nearly uniform +0.26 to +0.28 V offset. PBE+U is flat and misses the rise.
 
-3. **LFP reproduces the flat plateau** — the four hull plateaus are clustered within 0.19 V, consistent with a single flat plateau broadened by finite-size effects. Systematic PBE+U overestimate of +0.17 V (vs the 3.43 V two-phase equilibrium, Yamada 2001). The narrow voltage spread confirms the two-phase olivine mechanism.
+3. **LMO reproduces the two-step profile**, with both plateaus about 0.06 V above the measured open-circuit values. The computed step is at x = 0.44, the measured one near 0.60.
 
-4. **LMP step_16 is unconvergeable** — the fully delithiated MnPO₄ endpoint (Mn³⁺, d⁴) did not converge with PBE+U. Step voltage average of 3.91 V underestimates experiment by 0.19 V. The missing x=0 endpoint prevents hull analysis but does not affect the practical result — LMP is never fully delithiated experimentally.
+4. **LFP reproduces the flat plateau.** The four hull plateaus lie within 0.19 V of each other, consistent with a single flat plateau broadened by finite-size effects. The average is +0.17 V above the 3.43 V two-phase equilibrium potential (GITT, Kondo et al. 2018).
 
-5. **NMC has a two-regime problem** — physically reasonable at x > 0.5 (~3.93 V, overestimates by ~0.2 V), but the x < 0.5 regime (~4.86 V) is an artifact of oxygen redox activation, wrong functional (PBE instead of optB88-vdW), and ordered cation arrangement. The x > 0.5 average is the publishable result.
+5. **LMP is complete.** The fully delithiated MnPO₄ endpoint (Mn³⁺, d⁴) converged once it was rerun with the correct POTCAR; the earlier failure was a setup error, not a PBE+U convergence problem. The full-range average, 3.93 V, underestimates experiment by 0.17 V.
+
+6. **NMC agrees on average but not in shape.** Over the matching lithium range the first half is 0.25 V low and the second half 0.28 V high. The rise between the halves is more than twice the measured one, with both functionals and with or without cell relaxation.
 
 ### Systematic errors by functional
 
 | Functional | Materials | Typical error | Direction |
 |-----------|-----------|--------------|-----------|
-| PBE+U | LFP, LMO | +0.03 to +0.17 V | Overestimates |
-| PBE+U | LMP | −0.19 V | Underestimates (U too low for Mn²⁺/³⁺) |
-| PBE+U | NMC (x>0.5) | +0.23 V | Overestimates (wrong functional for layered) |
-| optB88-vdW | LCO | +0.26 to +0.28 V | Uniform overestimate across the plateaus |
+| PBE+U | LFP, LMO | +0.04 to +0.17 V | Overestimates |
+| PBE+U | LMP | −0.17 V | Underestimates (U too low for Mn²⁺/³⁺) |
+| PBE+U | NMC (matched Li range) | −0.25 V (first half), +0.28 V (second half) | Rise between the halves too steep |
+| optB88-vdW | LCO | +0.24 to +0.28 V | Uniform overestimate across the plateaus and the cycled range |
 | PBE+U | LCO (comparison) | −0.10 to −0.69 V | Flat profile; misses the rise at low Li content |
 
 ---

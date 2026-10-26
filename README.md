@@ -127,10 +127,10 @@ The tabulated JARVIS value (`-0.925 eV/atom`) is an optB88-vdW energy; combined 
 | JID | Formula | Abbreviation | Structure | Functional | DFT avg V | Experiment | Status |
 |-----|---------|-------------|-----------|------------|-----------|------------|--------|
 | JVASP-42723 | LiFePO4 | LFP | Olivine | PBE | 3.60 V | 3.43 V | **complete** |
-| JVASP-116897 | LiMnPO4 | LMP | Olivine | PBE | 3.91 V | ~4.1 V | 16/17 (step_16, the fully delithiated MnPO₄ endpoint, did not converge) |
-| JVASP-141792 | LiMn2O4 | LMO | Spinel | PBE | 4.08 V | 4.05 V | **complete** |
-| JVASP-144791 | Li4Mn3Co2Ni3O16 | NMC variant (Li:TM = 1:2) | Layered (P1 in JARVIS) | PBE | 4.40 V (4.18 V with the cell relaxed at x = 0.5 and 0; optB88-vdW 4.76 / 4.45 V) | ~3.7 V (NMC-111) | **complete** |
-| JVASP-2017 | LiCoO2 | LCO | Layered | optB88-vdW | 4.21 V over x = 1→0.5 (4.45 V over full delithiation; PBE+U 3.81 / 3.84 V) | ~4.05 V over x = 1→0.5 | **complete** (`JVASP-2017-LCO-B88/`) |
+| JVASP-116897 | LiMnPO4 | LMP | Olivine | PBE | 3.93 V | ~4.1 V | 17/17 (step_16, the fully delithiated MnPO₄ endpoint, rerun 2026-10-26 with the correct POTCAR) |
+| JVASP-141792 | LiMn2O4 | LMO | Spinel | PBE | 4.08 V | 4.04 V (open circuit, composition-weighted) | **complete** |
+| JVASP-144791 | Li4Mn3Co2Ni3O16 | NMC variant (Li:TM = 1:2) | Layered (P1 in JARVIS) | PBE | 4.40 V (4.18 V with the cell relaxed at x = 0.5 and 0; optB88-vdW 4.76 / 4.45 V) | 4.37 V (NMC-111 open circuit over the same Li range, Li0.5 → Li0 per transition metal; 3.85 V over the usual cycling window from full lithiation) | **complete** |
+| JVASP-2017 | LiCoO2 | LCO | Layered | optB88-vdW | 4.21 V over x = 1→0.5 (4.45 V over full delithiation; PBE+U 3.81 / 3.84 V) | 3.97 V over x = 1→0.5 (open circuit, composition-weighted) | **complete** (`JVASP-2017-LCO-B88/`) |
 
 **Functional choice rationale:**
 - **LFP, LMP (olivine), LMO (spinel):** PBE+U. These are 3D-bonded frameworks with no van der Waals gaps. Standard PBE with Hubbard U correction on the transition metal d-orbitals is sufficient and well-benchmarked for these structure types.

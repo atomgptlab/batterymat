@@ -19,10 +19,10 @@ DFT_INPUTS = os.path.normpath(os.path.join(HERE, "..", "dft_inputs"))
 
 LABELS = {
     "JVASP-117419": ("LiCr2P2O8", "top"),
-    "JVASP-141543": ("Rb2LiFeF6 (polymorph A)", "top"),
+    "JVASP-141543": ("Rb2LiFeF6 (entry A)", "top"),
     "JVASP-117295": ("Li3FeO3", "top"),
     "JVASP-116849": ("LiV2F7", "top"),
-    "JVASP-154749": ("Rb2LiFeF6 (polymorph B)", "top"),
+    "JVASP-154749": ("Rb2LiFeF6 (entry B, same structure as A)", "top"),
     "JVASP-96563": ("Li2MgMn3O8", "top"),
     "JVASP-95533": ("LiCoH24C8N8O12", "top"),
     "JVASP-97428": ("LiH4SNO4", "top"),
@@ -38,12 +38,19 @@ with open(os.path.join(HERE, "prospective_selection.csv")) as f:
     for r in csv.DictReader(f):
         tier2[r["jid"]] = float(r["avg_v"])
 
-rows = []
+# One chain per material. The four materials first run with GGA = OR (optPBE-vdW)
+# were rerun with the optB88-vdW tags in <jid>-B88/; the reruns are the reported values.
+chains = {}
 for ej in sorted(glob.glob(os.path.join(DFT_INPUTS, "*/supercell_*/energies.json"))):
-    d = json.load(open(ej))
-    jid = d["jid"]
+    jid = json.load(open(ej))["jid"]
     if jid not in LABELS:
-        continue  # dft_inputs also holds the five commercial benchmark cathodes
+        continue  # dft_inputs also holds the benchmark cathodes and other campaigns
+    if jid not in chains or "-B88" in ej:
+        chains[jid] = ej
+
+rows = []
+for jid, ej in chains.items():
+    d = json.load(open(ej))
     rec = sorted([s for s in d["steps"] if s.get("energy") is not None],
                  key=lambda s: s["n_li"], reverse=True)
     if len(rec) < 2:
@@ -81,11 +88,17 @@ lines.append(f"Controls: N={len(ctrls)}, DFT range "
              f"{min(r['dft'] for r in ctrls):.2f} to {max_ctrl:.2f} V.")
 lines.append(f"Separation: lowest top candidate ({min_top:.2f} V) vs highest control "
              f"({max_ctrl:.2f} V) -> {'NO OVERLAP' if min_top > max_ctrl else 'OVERLAP'}.")
-lines.append(f"Tier-2 vs DFT MAE over all {len(rows)} materials: {mae:.2f} V.")
+lines.append(f"Tier-2 vs DFT MAE over all {len(rows)} entries: {mae:.2f} V.")
+rb = [r for r in rows if r["jid"] in ("JVASP-141543", "JVASP-154749")]
+if len(rb) == 2:
+    rest = [abs(r["err"]) for r in rows if r not in rb]
+    mae11 = (sum(rest) + sum(abs(r["err"]) for r in rb) / 2) / (len(rest) + 1)
+    lines.append(f"Counting Rb2LiFeF6 once (mean of its two entries): {mae11:.2f} V "
+                 f"over {len(rest) + 1} distinct materials.")
 pA = next((r["dft"] for r in rows if r["jid"] == "JVASP-141543"), None)
 pB = next((r["dft"] for r in rows if r["jid"] == "JVASP-154749"), None)
 if pA and pB:
-    lines.append(f"Rb2LiFeF6 polymorph agreement: {pA:.3f} vs {pB:.3f} V "
+    lines.append(f"Rb2LiFeF6 entry agreement: {pA:.3f} vs {pB:.3f} V "
                  f"(delta {abs(pA-pB)*1000:.0f} mV).")
 
 out = os.path.join(HERE, "prospective_table.md")

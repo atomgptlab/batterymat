@@ -26,17 +26,29 @@ AVG_V_ALIGNN = [3.49, 3.17, 4.07, 4.18, 3.84]
 AVG_V_TIER1  = [3.25, 3.10, 3.60, 3.70, 3.42]
 # LCO: optB88-vdW+U rerun (JVASP-2017-LCO-B88), average over x = 1 -> 0.5 (Li8 -> Li4), the
 # experimentally cycled range; full-range average is 4.45 V (see revision_voltages.json).
-AVG_V_DFT    = [3.60, 3.91, 4.08, 4.40, 4.21]
+AVG_V_DFT    = [3.60, 3.93, 4.08, 4.40, 4.21]
 MAX_V_ALIGNN = [3.74, 3.60, 4.42, 4.77, 5.06]
 MAX_V_DFT    = [3.99, 4.34, 4.41, 5.03, 5.21]
 CAP_ALIGNN   = [632, 606, 667, 702, 1372]
 CAP_DFT      = [605, 586, 607, 679, 1380]  # LCO: relaxed optB88 step_00 volume 258.04 A^3
 
-# Experimental references (see screening_cathode_analysis.md for citations).
-# Avg: quasi-equilibrium average discharge voltage (GITT / low C-rate).
-# Max: highest plateau voltage reported in galvanostatic cycling.
-AVG_V_EXP = [3.43, 4.10, 4.05, 3.70, 4.05]  # LFP: Yamada 2001 two-phase equilibrium 3.43 V
-MAX_V_EXP = [3.50, 4.10, 4.17, 4.20, 4.17]  # LFP: Padhi 1997 plateau 3.5 V
+# Experimental references (order LFP, LMP, LMO, NMC, LCO).
+# Avg: LFP 3.43 V two-phase equilibrium potential from GITT (Kondo et al., JES 165,
+#   A2047, 2018); LMP ~4.1 V plateau (Padhi 1997; Aravindan et al., JMCA 1, 3518, 2013);
+#   LMO 4.04 V, composition-weighted open-circuit voltage (Ohzuku, Kitagawa & Hirai,
+#   JES 137, 769, 1990: 4.110 V for 0.27 < x < 0.60, taken to x = 0; one-phase region
+#   centered at 3.94 V for 0.60 < x < 1); NMC 4.37 V, open-circuit voltage of NMC-111
+#   averaged over Li0.5 -> Li0.03 per TM, the range the Li4Mn3Co2Ni3O16 cell covers
+#   (Yabuuchi & Ohzuku, 206th ECS Meeting, Abstract 324, 2004; conventional-window
+#   average 3.85 V, Yoshizawa & Ohzuku, Electrochemistry 71, 1177, 2003); LCO 3.97 V,
+#   composition-weighted open-circuit voltage over x = 1 -> 0.5 (Ohzuku & Ueda, JES 141,
+#   2972, 1994: 3.92 V plateau to x ~ 0.74, 4.20 V at x = 0.5; digitized curve).
+# Max: highest plateau where the profile has one (LFP 3.5 V, Padhi 1997; LMP 4.1 V;
+#   LMO 4.11 V, Ohzuku 1990); for the sloping NMC and LCO profiles the highest
+#   open-circuit voltage over the compared range (NMC 4.71 V at Li0.03, Yabuuchi &
+#   Ohzuku 2004; LCO 4.20 V at x = 0.5, Ohzuku & Ueda 1994).
+AVG_V_EXP = [3.43, 4.10, 4.04, 4.37, 3.97]
+MAX_V_EXP = [3.50, 4.10, 4.11, 4.71, 4.20]
 
 # Theoretical volumetric capacity (Q_grav [mAh/g] * density [g/cm^3]).
 # LFP 170*3.60; LMP 171*3.43; LMO 148*4.28 (1 Li/f.u. reversible);
@@ -44,13 +56,21 @@ MAX_V_EXP = [3.50, 4.10, 4.17, 4.20, 4.17]  # LFP: Padhi 1997 plateau 3.5 V
 CAP_EXP = [612, 587, 633, 1326, 1383]
 
 
-def grouped_bar(ax, labels, groups, title, ylabel, ylim=None):
+# one color per method in every panel
+COLORS = {"ALIGNN (tier 1)": "#B07AA1", "ALIGNN-FF": "#4C78A8", "DFT": "#F28E2B", "Experiment": "#59A14F"}
+
+
+def _color(name):
+    return next(c for k, c in COLORS.items() if name == k or name.startswith(k + " "))
+
+
+def grouped_bar(ax, labels, groups, title, ylabel, ylim=None, legend_kw=None):
     names = list(groups.keys())
     values = [groups[n] for n in names]
     x = np.arange(len(labels))
     width = 0.8 / len(names)
     offsets = (np.arange(len(names)) - (len(names) - 1) / 2) * width
-    colors = ["#4C78A8", "#F28E2B", "#59A14F", "#B07AA1"]
+    colors = [_color(n) for n in names]
     for off, name, vals, color in zip(offsets, names, values, colors):
         bars = ax.bar(x + off, vals, width, label=name, color=color)
         for b, v in zip(bars, vals):
@@ -63,7 +83,7 @@ def grouped_bar(ax, labels, groups, title, ylabel, ylim=None):
     ax.set_title(title)
     if ylim is not None:
         ax.set_ylim(*ylim)
-    ax.legend()
+    ax.legend(**(legend_kw or {}))
 
 
 # Voltage summary (two panels)
@@ -72,7 +92,7 @@ grouped_bar(
     axes[0], MATERIALS,
     {"ALIGNN (tier 1)": AVG_V_TIER1, "ALIGNN-FF (tier 2)": AVG_V_ALIGNN, "DFT (tier 3)": AVG_V_DFT, "Experiment": AVG_V_EXP},
     "Average voltage",
-    "Average Voltage (V)", ylim=(0, 6),
+    "Average Voltage (V)", ylim=(0, 6.6), legend_kw={"loc": "upper center", "ncol": 2, "fontsize": 12},
 )
 grouped_bar(
     axes[1], MATERIALS,
@@ -80,7 +100,8 @@ grouped_bar(
     "Maximum voltage",
     "Max Voltage (V)", ylim=(0, 8),
 )
-fig.tight_layout()
+fig.text(0.005, 0.98, "a", fontsize=20, fontweight="bold", va="top")
+fig.tight_layout(rect=(0.015, 0, 1, 1))
 fig.savefig("voltage_summary.png", dpi=300)
 plt.close(fig)
 
@@ -92,7 +113,8 @@ grouped_bar(
     "Theoretical volumetric capacity",
     "Volumetric Capacity (mAh/cm³)",
 )
-fig.tight_layout()
+fig.text(0.005, 0.98, "b", fontsize=20, fontweight="bold", va="top")
+fig.tight_layout(rect=(0.02, 0, 1, 1))
 fig.savefig("capacity_summary.png", dpi=300)
 plt.close(fig)
 

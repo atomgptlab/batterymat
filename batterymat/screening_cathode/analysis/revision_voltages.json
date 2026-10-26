@@ -31,7 +31,8 @@
     "V": 4.776
    }
   ],
-  "unconverged_steps": []
+  "unconverged_steps": [],
+  "endpoints_left_out": []
  },
  "JVASP-2017-LCO-PBE": {
   "label": "LiCoO2, PBE+U",
@@ -60,7 +61,8 @@
     "V": 3.976
    }
   ],
-  "unconverged_steps": []
+  "unconverged_steps": [],
+  "endpoints_left_out": []
  },
  "JVASP-2017-LCO": {
   "label": "LiCoO2, optPBE-vdW+U (original run)",
@@ -89,7 +91,8 @@
     "V": 4.475
    }
   ],
-  "unconverged_steps": []
+  "unconverged_steps": [],
+  "endpoints_left_out": []
  },
  "JVASP-144791-NMC-vdW": {
   "label": "NMC cell, optB88-vdW+U",
@@ -153,7 +156,8 @@
     "V": 5.344
    }
   ],
-  "unconverged_steps": []
+  "unconverged_steps": [],
+  "endpoints_left_out": []
  },
  "JVASP-144791-NMC": {
   "label": "NMC cell, PBE+U (original run)",
@@ -192,7 +196,8 @@
     "V": 4.861
    }
   ],
-  "unconverged_steps": []
+  "unconverged_steps": [],
+  "endpoints_left_out": []
  },
  "JVASP-79809-NCO": {
   "label": "O3-NaCoO2, optB88-vdW+U",
@@ -224,6 +229,7 @@
   "unconverged_steps": [
    "step_06_Na2"
   ],
+  "endpoints_left_out": [],
   "V_avg_exp_range": {
    "range": "8->4",
    "V": 3.086
@@ -236,9 +242,9 @@
   "functional": "pbe",
   "mu_metal": -1.50576,
   "n_total": 16,
-  "recorded": "16->0 of 16",
-  "V_avg_recorded_range": 3.237,
-  "complete": true,
+  "recorded": "16->1 of 16",
+  "V_avg_recorded_range": 3.218,
+  "complete": false,
   "hull": [
    {
     "x_from": 1.0,
@@ -262,12 +268,15 @@
    },
    {
     "x_from": 0.125,
-    "x_to": 0.0,
-    "V": 3.596
+    "x_to": 0.0625,
+    "V": 3.659
    }
   ],
   "unconverged_steps": [
    "step_16_Mg0"
+  ],
+  "endpoints_left_out": [
+   0
   ],
   "V_avg_exp_range": {
    "range": "16->10",
@@ -291,7 +300,8 @@
     "V": 6.127
    }
   ],
-  "unconverged_steps": []
+  "unconverged_steps": [],
+  "endpoints_left_out": []
  },
  "JVASP-154749-B88": {
   "label": "Rb2LiFeF6 (B), optB88-vdW+U",
@@ -310,7 +320,8 @@
     "V": 6.128
    }
   ],
-  "unconverged_steps": []
+  "unconverged_steps": [],
+  "endpoints_left_out": []
  },
  "JVASP-116849-B88": {
   "label": "LiV2F7, optB88-vdW+U",
@@ -329,7 +340,8 @@
     "V": 4.918
    }
   ],
-  "unconverged_steps": []
+  "unconverged_steps": [],
+  "endpoints_left_out": []
  },
  "JVASP-77457-B88": {
   "label": "LiCa2Ag, optB88-vdW",
@@ -348,6 +360,7 @@
     "V": 0.446
    }
   ],
-  "unconverged_steps": []
+  "unconverged_steps": [],
+  "endpoints_left_out": []
  }
 }

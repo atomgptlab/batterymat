@@ -10,7 +10,10 @@ energies this script
   - computes the average voltage over the full range and over the range that
     matches the experimental comparison (the average over any range telescopes
     to the two-endpoint value (E_lo - E_hi)/(z dn) + mu/z),
-  - flags steps whose results/OUTCAR lacks "reached required accuracy",
+  - flags steps whose results/OUTCAR lacks "reached required accuracy" and leaves
+    an unconverged step at either end of the range out of the averages and the
+    hull (as the paper does for the MgMn2O4 Mg0 step); unconverged interior
+    steps stay in the hull and are listed,
 
 and writes revision_voltages.json and revision_voltages.md. Metal references
 come from energies.json, falling back to dft_prep._E_ION_METAL.
@@ -91,6 +94,12 @@ def main():
             m = dp._STEP_RE.match(d.name)
             if m and int(m.group(3)) in E and converged(d) is False:
                 unconv.append(d.name)
+        unconv_n = {int(dp._STEP_RE.match(d).group(3)) for d in unconv}
+        dropped = []
+        while len(E) > 2 and max(E) in unconv_n:
+            dropped.append(max(E)); E.pop(max(E))
+        while len(E) > 2 and min(E) in unconv_n:
+            dropped.append(min(E)); E.pop(min(E))
         n_hi, n_lo = max(E), min(E)
         avg = lambda a, b: round((E[b] - E[a]) / (z * (a - b)) + mu / z, 3)
         rec = {"label": label, "ion": ion, "z": z, "functional": data.get("functional"),
@@ -98,7 +107,8 @@ def main():
                "V_avg_recorded_range": avg(n_hi, n_lo),
                "complete": n_hi == n_total and n_lo == 0,
                "hull": hull_plateaus(list(E.items()), n_total, z, mu),
-               "unconverged_steps": sorted(unconv)}
+               "unconverged_steps": sorted(unconv),
+               "endpoints_left_out": sorted(dropped, reverse=True)}
         if rng and rng[0] in E and rng[1] in E:
             rec["V_avg_exp_range"] = {"range": f"{rng[0]}->{rng[1]}", "V": avg(*rng)}
         out[name] = rec
@@ -110,7 +120,7 @@ def main():
         rows.append(rec | {"name": name})
 
     json.dump(out, open(HERE / "revision_voltages.json", "w"), indent=1)
-    lines = ["| Campaign | Functional | Range | V_avg (V) | Exp. range V_avg (V) | Hull plateaus (V) | Unconverged |",
+    lines = ["| Campaign | Functional | Range | V_avg (V) | Exp. range V_avg (V) | Hull plateaus (V) | Unconverged (left out if at an end) |",
              "|---|---|---|---|---|---|---|"]
     for r in rows:
         er = r.get("V_avg_exp_range", {})

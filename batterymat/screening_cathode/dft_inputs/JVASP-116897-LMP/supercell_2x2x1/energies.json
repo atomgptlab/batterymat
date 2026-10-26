@@ -12,8 +12,10 @@
     {
       "step": 0,
       "n_li": 16,
-      "energy": -798.06163257,
-      "removed_li_index": null
+      "energy": -798.22301208,
+      "removed_li_index": null,
+      "energy_block_order": -798.06163257,
+      "energy_source": "extra_2026-10-26/LMP-Li16-altmag: step-0 geometry recomputed in the alternating magnetic order of steps 1-15 (0.16 eV lower); energy_block_order is the step_00 run"
     },
     {
       "step": 1,
@@ -108,8 +110,9 @@
     {
       "step": 16,
       "n_li": 0,
-      "energy": null,
-      "removed_li_index": 0
+      "energy": -704.89375546,
+      "removed_li_index": 0,
+      "energy_source": "extra_2026-10-26/LMP-Li0 (2026-10-26 rerun with the Mn_pv/P/O POTCAR; the earlier attempt used the step-15 POTCAR and is not used)"
     }
   ]
 }

@@ -21,11 +21,13 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 plt.rcParams.update({"font.size": 13, "axes.labelsize": 14, "axes.titlesize": 14,
                      "legend.fontsize": 11, "xtick.labelsize": 12, "ytick.labelsize": 12})
 
+# experimental averages: see make_summary_plots.py (NMC: NMC-111 open-circuit voltage over
+# the lithium range the cell covers, Li0.5 -> Li0.03 per transition metal)
 MATS = [("JVASP-42723", "LFP", "Li$_x$FePO$_4$", 3.43),
         ("JVASP-116897", "LMP", "Li$_x$MnPO$_4$", 4.10),
-        ("JVASP-141792", "LMO", "Li$_x$Mn$_2$O$_4$", 4.05),
-        ("JVASP-144791", "NMC", "Li$_x$Mn$_3$Co$_2$Ni$_3$O$_{16}$", 3.70),
-        ("JVASP-2017", "LCO", "Li$_x$CoO$_2$", 4.05)]
+        ("JVASP-141792", "LMO", "Li$_x$Mn$_2$O$_4$", 4.04),
+        ("JVASP-144791", "NMC", "Li$_x$Mn$_3$Co$_2$Ni$_3$O$_{16}$", 4.37),
+        ("JVASP-2017", "LCO", "Li$_x$CoO$_2$", 3.97)]
 # chain directory when it differs from <jid>-<abbrev>: LCO uses the optB88-vdW rerun
 DIRS = {"LCO": "JVASP-2017-LCO-B88"}
 # measured two-phase plateaus (x_lo, x_hi, V): Ohzuku & Ueda, J. Electrochem. Soc. 141, 2972 (1994)
@@ -86,20 +88,24 @@ def main():
             xs.append((a["n_li"] + b["n_li"]) / 2 / n_tot)
             vs.append((b["energy"] - a["energy"]) / dn + e_li)
         ax.plot(xs, vs, "o-", color="#1f77b4", lw=1.5, ms=5, label="DFT step voltage")
+        ys = list(vs)
         plateaus, ocv, x_lo = lower_hull(steps, e_li)
         lab = "DFT equilibrium (hull)"
         for a, b, v in plateaus:
             ax.plot([b, a], [v, v], "--", color="#d62728", lw=2.2, label=lab)
+            ys.append(v)
             lab = None
         prof = [float(v) for v in li[li.name.str.contains("_" + jid + "_")].iloc[0].voltage_profile.split(";")]
         n = len(prof)
         xf = [1 - (i + 0.5) / n for i in range(n)]
         ax.plot(xf, prof, "s-", color="#ff7f0e", lw=1.2, ms=4, alpha=0.9, label="ALIGNN-FF step voltage")
+        ys += prof + [vexp]
         x_exp = EXP_RANGE.get(ab, 0.0)
         ax.plot([x_exp, 1.0], [vexp, vexp], color="0.35", ls=":", lw=1.5, label="Experiment (avg)")
         lab2 = "Experiment (two-phase plateau)"
         for x0, x1, v in EXP_PLATEAUS.get(ab, []):
             ax.plot([x0, x1], [v, v], color="0.2", lw=2.5, label=lab2)
+            ys.append(v)
             lab2 = None
         if ab in EXP_RANGE:
             E = {s["n_li"]: s["energy"] for s in steps}
@@ -109,9 +115,14 @@ def main():
         ax.set_title(f"{ab}, {jid}")
         extra = f"\nDFT avg ($x\\geq{EXP_RANGE[ab]:.1f}$): {v_rng:.2f} V" if ab in EXP_RANGE else ""
         exp_lab = f"Experiment ($x\\geq{EXP_RANGE[ab]:.1f}$)" if ab in EXP_RANGE else "Experiment"
-        ax.text(0.03, 0.04, f"OCV (DFT hull avg){rng}: {ocv:.2f} V{extra}\nALIGNN-FF avg: {sum(prof)/n:.2f} V\n{exp_lab}: {vexp:.2f} V",
-                transform=ax.transAxes, fontsize=11, va="bottom",
+        stats = f"OCV (DFT hull avg){rng}: {ocv:.2f} V{extra}\nALIGNN-FF avg: {sum(prof)/n:.2f} V\n{exp_lab}: {vexp:.2f} V"
+        ax.text(0.03, 0.03, stats, transform=ax.transAxes, fontsize=11, va="bottom",
                 bbox=dict(boxstyle="round", fc="white", ec="0.7", alpha=0.9))
+        # reserve the bottom of the panel for the stats box so it never covers data
+        lo, hi = min(ys), max(ys)
+        frac = (0.19 * (stats.count("\n") + 1) + 0.25) / 3.3
+        span = hi - lo
+        ax.set_ylim(lo - span * frac / (1 - frac) - 0.03 * span, hi + 0.05 * span)
         ax.set_xlabel(f"$x$ in {host}")
         ax.set_ylabel("Voltage (V vs. Li/Li$^+$)")
         ax.set_xlim(-0.02, 1.02)

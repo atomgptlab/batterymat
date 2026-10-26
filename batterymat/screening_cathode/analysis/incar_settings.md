@@ -12,50 +12,52 @@ Summary of VASP INCAR settings used for all five cathode materials in the sequen
 | NMC (Li₄Mn₃Co₂Ni₃O₁₆) | JVASP-144791 | 2×2×1 | 112 | PBE+U | Mn=3.9, Co=3.32, Ni=6.2 | 2×2×3 | Li_sv, Mn_pv, Co, Ni_pv, O |
 | LCO (LiCoO₂) | JVASP-2017 | 2×2×2 | 32 | optB88-vdW+U in the reported chain `JVASP-2017-LCO-B88` (the original `JVASP-2017-LCO` chain was optPBE-vdW+U, labelled optB88 until 2026-09-28) | Co=3.32 | 2×2×2 | Li_sv, Co, O |
 
-## Common Settings (All Materials)
+## Where the settings live
 
-These tags are shared across all five materials and all delithiation steps:
+Every INCAR under `dft_inputs/` is the file used for the run that produced the recorded
+energy (checked against the INCAR echoed at the top of each OUTCAR). Read those files for
+any single step; this note summarizes them.
 
-```
-ENCUT  = 520        # Plane-wave cutoff (eV)
-EDIFF  = 1E-6       # Electronic convergence (eV)
-EDIFFG = -0.03      # Ionic convergence (eV/Å, force-based)
-PREC   = Accurate
-ISMEAR = 0          # Gaussian smearing
-SIGMA  = 0.05       # Smearing width (eV)
-ISPIN  = 2          # Spin-polarized
-LASPH  = .TRUE.     # Non-spherical PAW contributions
-LMAXMIX = 4         # l-mixing for d-electrons
-ISYM   = 0          # No symmetry (broken by vacancies)
-LORBIT = 11         # Projected DOS
-LREAL  = Auto       # Real-space PAW projection (safe for supercells >20 atoms)
-LWAVE  = .TRUE.     # Write WAVECAR
-LCHARG = .TRUE.     # Write CHGCAR
-IBRION = 2          # Conjugate gradient ionic relaxation
-ISTART = 0          # Fresh wavefunction (no WAVECAR reuse)
-```
+## Two input templates
 
-**Note:** Step_00 INCARs use `ISTART=0` (cold start). Later steps can use `ISTART=1` / `ICHARG=1` to reuse WAVECAR/CHGCAR from the previous step, but the INCARs on disk have `ISTART=0` throughout.
+The template changed during the benchmark campaigns. Shared by both: `ENCUT = 520`,
+`PREC = Accurate`, `ISMEAR = 0`, `SIGMA = 0.05`, `ISPIN = 2`, `LASPH = .TRUE.`,
+`LMAXMIX = 4`, `ISYM = 0`, `LORBIT = 11`, `LREAL = Auto`, `NCORE = 8`,
+`NSW = min(300, max(200, 2 * n_atoms))`.
+
+| Tag | Earlier template | Current template |
+|-----|------------------|------------------|
+| IBRION | 2 (conjugate gradient) | 1 (quasi-Newton) |
+| EDIFF | 1E-4 (1E-6 for LMP steps 0-2 and the original LCO steps 0-2) | 1E-4 |
+| EDIFFG | default (10 x EDIFF); -0.03 on most of the 1E-6 steps | default (10 x EDIFF) |
+| NELM / NELMIN | 500 / default | 100 / 4 |
+| ISTART / ICHARG | cold start | 1 / 1 (restart from the previous step's WAVECAR/CHGCAR when present) |
+| Mixing | default | AMIX = 0.2, BMIX = 0.0001, AMIX_MAG = 0.4, BMIX_MAG = 0.0001 |
+| KPAR / NSIM | 2 / 8, except LMP steps 0-2 and the original LCO steps 0-2 (defaults) | 2 / 8 |
+
+Per chain, the current template is used for 14 of 17 LFP steps, 14 of 17 NMC steps, 3 of 17
+LMO steps, 3 of 17 LMP steps (steps 14-16; the step-16 endpoint was rerun with a cold start, see below),
+all 9 steps of the reported LCO chain (`JVASP-2017-LCO-B88`) and every other campaign
+(LCO-PBE, NMC-vdW, NaCoO2, MgMn2O4, prospective, spot-check). Exceptions:
+
+- Four transitional steps (LFP and NMC step 2, LMO and LMP step 13) use IBRION = 1, NELM = 100
+  and restarts but not the conservative mixing; they were continued after the template change.
+- LFP step 1 uses the earlier template with reduced mixing (AMIX = 0.1, BMIX = 0.01,
+  AMIX_MAG = 0.2, BMIX_MAG = 0.0001): its first run reached the 500-iteration SCF cap and
+  stopped, and the step was continued from its last structure.
+- The fully delithiated step of the original LCO chain (`JVASP-2017-LCO/step_08_Li0`) was
+  rerun with ISIF = 2, a cold start, ALGO = All, TIME = 0.4, AMIN = 0.01, AMIX = 0.1,
+  AMIX_MAG = 0.2, NELM = 200, NELMIN = 6, NSIM = 4 and MAGMOM 1/-1 on Co, after the ISIF = 3
+  relaxation expanded the cell by about 28%.
 
 ## Step-Dependent Settings
 
 | Setting | Step 0 (fully lithiated) | Steps 1+ (delithiated) |
 |---------|-------------------------|------------------------|
-| ISIF | 3 (full cell + ion relaxation) | 2 (ion-only, fixed cell shape) |
-| NSW | 200--224 (material-dependent) | Decreases by 2 per step (fewer atoms) |
+| ISIF | 3 (full cell + ion relaxation) | 2 for hosts outside the layered spacegroup whitelist (LFP, LMP, LMO, and NMC, whose JARVIS entry is P1); 3 for whitelisted layered hosts (LCO) |
+| NSW | `min(300, max(200, 2 * n_atoms))` | same rule |
 
-**ISIF rationale:** Step 0 needs full cell relaxation to establish the equilibrium lattice. Steps 1+ use ISIF=2 to avoid Pulay stress artifacts from the incomplete basis set at changed volumes. For layered materials (LCO), ISIF=3 should ideally be kept at all steps because the c-axis must relax to accommodate interlayer expansion on delithiation -- ISIF=2 can produce negative voltages in layered systems.
-
-## Performance Tags
-
-```
-NCORE = 8           # Band parallelization (sqrt of 64 cores)
-KPAR  = 2           # k-point parallelization (2 groups)
-NSIM  = 8           # Bands optimized simultaneously
-NELM  = 500         # Max SCF iterations
-```
-
-KPAR=2 and NSIM=8 are present in LFP, LMO, NMC, and LCO but absent from LMP (no effect on results, only performance). Adjust NCORE and KPAR for different core counts.
+**ISIF rationale:** Step 0 needs full cell relaxation to establish the equilibrium lattice. Steps 1+ use ISIF=2 to avoid Pulay stress artifacts from the incomplete basis set at changed volumes. Layered hosts keep ISIF=3 because the c-axis must relax to accommodate interlayer changes on delithiation; ISIF=2 can produce negative voltages in layered systems.
 
 ## DFT+U Parameters (Dudarev, LDAUTYPE=2)
 
@@ -119,7 +121,7 @@ functionals"). It is kept as `functional = "optpbevdw"`; the true optB88-vdW rer
 
 Step 0 uses block-structured AFM patterns where consecutive groups of magnetic atoms alternate sign. Default magnetic moments per element: Mn=4.0 μB, Fe=5.0 μB, Co=0.6 μB, Ni=2.0 μB. Non-magnetic atoms (Li, O, P) get 0.
 
-Steps 1+ inherit MAGMOM from the previous step's INCAR with the removed Li's entry dropped. This preserves the block structure rather than regenerating per-atom alternating signs (which caused SCF divergence in DFT+U).
+Steps 1+ inherit MAGMOM from the previous step's INCAR with the removed Li's entry dropped. This preserves the block structure rather than regenerating per-atom alternating signs (which caused SCF divergence in DFT+U). The LMP chain predates the inheritance: its steps 1-15 were started from a per-atom alternating pattern (`4 -4 4 -4 ...`) and converged in that order, whereas step 0 converged in the block order. `dft_inputs/extra_2026-10-26/LMP-Li16-altmag/` is step 0 recomputed in the alternating order (0.16 eV lower per cell).
 
 ### Step 0 MAGMOM Per Material
 
@@ -166,29 +168,15 @@ optB88-vdW, `GGA=OR` is optPBE-vdW, and optB86b-vdW is `GGA=MK`. The `Li_sv/` ru
 correct optB88-vdW reference. The original LCO chain and the -0.9646 reference are a
 consistent optPBE-vdW pair.
 
-## LMP Step 16 (Abandoned)
+## LMP Step 16 (fully delithiated MnPO4)
 
-The fully delithiated MnPO₄ (step_16, Li₀) required special cold-start settings due to the convergence difficulty of the fully delithiated MnPO₄ endpoint (Mn³⁺, d⁴). Multiple attempts failed -- the energy was ~200 eV above the expected ground state, indicating a trapped false electronic minimum from near-degenerate magnetic configurations.
-
-Final INCAR attempt:
-```
-IBRION = 1          # RMM-DIIS (changed from CG)
-NSW    = 300
-ISIF   = 2
-EDIFF  = 1E-4       # Loosened from 1E-6
-NELM   = 100        # Fail-fast on bad SCF
-NELMIN = 4
-ISTART = 0          # Cold start (no WAVECAR)
-ICHARG = 2          # Atomic superposition (respects MAGMOM)
-ALGO   = All        # Davidson + RMM-DIIS hybrid
-AMIX     = 0.1      # Gentler charge mixing
-BMIX     = 3E-5
-AMIX_MAG = 0.2      # Gentler magnetic mixing
-BMIX_MAG = 3E-5
-MAGMOM = 3 -3 3 -3 3 -3 3 -3 3 -3 3 -3 3 -3 3 -3  80*0
-```
-
-This step was abandoned as not experimentally relevant (olivine LMP is never fully delithiated in practice).
+The run that survives from the original chain used the step-15 POTCAR (Li_sv, Mn_pv, P) on a
+Mn, P, O cell, so VASP read Mn as Li, P as Mn and O as P (NELECT 576 instead of 672). Its energy,
+about 190 eV above the value expected from step 15, reflects that setup error, not a false
+electronic minimum. The endpoint was rerun on 2026-10-26 (`dft_inputs/extra_2026-10-26/LMP-Li0/`, copied to
+`JVASP-116897-LMP/supercell_2x2x1/step_16_Li0/`) from the step-15 relaxed structure with the
+correct POTCAR (Mn_pv, P, O), the step-15 INCAR with a cold start (ISTART = 0, ICHARG = 2) and
+the alternating MAGMOM of steps 1-15; it converged in 46 ionic steps at -704.89376 eV.
 
 ## TB-mBJ Static Settings (Optional)
 

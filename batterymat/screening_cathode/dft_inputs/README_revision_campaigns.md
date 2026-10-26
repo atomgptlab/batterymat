@@ -22,6 +22,7 @@ KPOINTS, POTCAR_spec; never POTCAR) and summarised by `../analysis/revision_volt
 | A. `JVASP-2017-LCO-PBE` | complete, 9/9; volume +3.5% at CoO2 relative to the relaxed LiCoO2 cell (+4.4% relative to the JARVIS input cell) | full 3.84 V, x 1->0.5 3.81 V, hull 3.73 / 3.80 / 3.98 V (flat, misses the rise). Functional gap 0.62 V full / 0.39 V matched |
 | `JVASP-2017-LCO` (original, GGA=OR = optPBE-vdW) | kept for comparison | full 4.18 V, x 1->0.5 4.01 V |
 | B. `JVASP-144791-NMC-vdW` | complete, 17/17 converged, no intervention (ISIF=2 after step 0, like the PBE chain) | full **4.76 V** (PBE+U 4.40; exp ~3.7); x 1->0.5 4.28 (PBE 3.94); x 0.5->0 5.24 (PBE 4.86). Near-uniform +0.36 V shift at fixed cell. Cell-relaxed endpoints (ISIF=3 at Li8 and Li0, `extra_2026-10-01/NMC-{PBE,vdW}-ISIF3/`): PBE+U 3.73 / 4.63 / 4.18 V (x 1->0.5 / 0.5->0 / full), optB88 4.02 / 4.88 / 4.45 V; cells contract 5% and 9-10%. So the fixed-cell protocol adds ~0.2 V, optB88 sits 0.25-0.38 V above PBE either way, and the ~0.9 V jump at x=0.5 persists in all four. PBE+U fixed-cell 4.40 V stays the benchmark (JARVIS spacegroup is P1, so the rule routes it to PBE) |
+| LMP completion (`extra_2026-10-26/`) | both converged (2026-10-26): `LMP-Li0` (fully delithiated endpoint, 46 ionic steps; earlier attempts had used the step-15 POTCAR) and `LMP-Li16-altmag` (step 0 in the alternating magnetic order of steps 1-15, 0.161 eV/cell below the block order) | LMP 3.93 V over full delithiation (exp ~4.10); with the block-order step 0 3.92 V. Both energies recorded in `JVASP-116897-LMP/supercell_2x2x1/energies.json` (`energy_source` notes) |
 | C. `spotcheck/` | 28/30 converged (6 delithiated endpoints restarted from their last structure in `extra_2026-10-01/spotcheck-restart/`; Li8MnO6 and Li7FeO6 still drifting after 500 steps) | all: MAE 0.88 V, ME +0.68, Spearman 0.90; redox-metal hosts (n=14): MAE 0.54, offset +0.35, scatter 0.43, Spearman 0.94 (`analysis/spotcheck_stats.json`) |
 | D. `JVASP-79809-NCO` (Na) | complete, 9/9 states; all converged except step 6 (Na2), which hit NSW = 200; cell -20% at CoO2 | Na8->Na4: **3.09 V** (exp ~2.9 over x 1->0.5, Lei et al. 2014), +0.19 V. Full range **3.73 V** (endpoints converged) against 3.17 V from the force-field screen (FF 0.56 V low); Na4->Na0 4.37 V; step voltages 3.32 / 3.00 / 3.13 / 2.89 / 4.82 / 4.17 / 3.55 / 4.95 V |
 | D. `JVASP-11340-MMO` (Mg) | complete; steps 0 to 15 converged, step 16 (Mg0) hit NSW = 200 unconverged | Mg16->Mg10: **3.10 V** vs ~3.4 V (Okamoto et al. 2015), -0.30 V. Hull 3.08 / 3.11 / 3.32 / 3.43 / 3.66 V over Mg16->Mg1 (the unconverged Mg0 step excluded); Mg16->Mg1 3.22 V |
@@ -83,7 +84,8 @@ Existing directories (`JVASP-2017-LCO`, `JVASP-144791-NMC`, the other benchmark 
    and `dft_inputs/` (only the new campaign folders are needed) into one work directory,
    e.g. `~/dft/revision/`. `dft_prep.py next` needs a conda env with `jarvis-tools`,
    `alignn` and `torch` (CPU is fine; the ALIGNN weights `alignnff_wt01` must be present or
-   downloadable, see CLAUDE.md for the figshare WAF workaround).
+   downloadable; if the figshare download is blocked, place `best_model.pt` and `config.json`
+   by hand in `alignn/ff/alignnff_wt01/` inside the installed `alignn` package).
 2. Edit the `EDIT ME` block at the top of both scripts (WORKDIR, conda, VASP binary or
    module, POTCAR library, optional vdw_kernel.bindat) and the `#SBATCH` header (partition,
    account, ntasks, walltime). The scripts also accept the same settings as `BMAT_*`
