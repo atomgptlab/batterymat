@@ -61,8 +61,10 @@
     {
       "step": 8,
       "n_li": 16,
-      "energy": -260.70859198,
-      "removed_li_index": 4
+      "energy": -260.71661191,
+      "removed_li_index": 4,
+      "energy_nsw200": -260.70859198,
+      "energy_source": "extra_2026-10-26/Li3FeO3-Li16-restart: continued from the NSW-200 geometry and wavefunction of this step (it had hit NSW = 200 unconverged), converged in 5 CG steps; energy_nsw200 is the original unconverged run"
     },
     {
       "step": 9,
@@ -158,7 +160,8 @@
       "step": 24,
       "n_li": 0,
       "energy": -158.58585153,
-      "removed_li_index": 0
+      "removed_li_index": 0,
+      "note": "NSW-200 value of an unconverged relaxation; not used. Continuing it (extra_2026-10-26/Li3FeO3-Li0-restart) forms O2 molecules (Fe8O24 -> Fe8O16 + 4 O2) and the energy falls by more than 15 eV, so the fully delithiated composition has no intercalation energy. Li3FeO3 is reported over steps 0-8 (Li24 -> Li16, Fe3+/Fe4+; see analysis/04_prospective_table.py PARTIAL)."
     }
   ]
 }

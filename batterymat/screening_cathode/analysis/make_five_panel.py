@@ -34,6 +34,10 @@ DIRS = {"LCO": "JVASP-2017-LCO-B88"}
 EXP_PLATEAUS = {"LCO": [(0.75, 1.0, 3.92), (0.0, 0.25, 4.50)]}
 # experimental average refers to this lithium range (LCO is cycled only to x ~ 0.5)
 EXP_RANGE = {"LCO": 0.5}
+# JVASP-42723 and JVASP-116897 are a Pnma polymorph with tetrahedral Li, not olivine. Olivine
+# two-endpoint energies (x = 1 cell-relaxed, x = 0 at that cell, the protocol of the chains):
+# dft_inputs/extra_2026-10-26/olivine-{LFP,LMP}/{Li16,Li0-fixcell} (see the README there)
+OLIVINE = {"LFP": (-764.16915887, -676.88849074), "LMP": (-802.41965953, -709.29623066)}
 
 
 def lower_hull(steps, e_li):
@@ -102,6 +106,11 @@ def main():
         ys += prof + [vexp]
         x_exp = EXP_RANGE.get(ab, 0.0)
         ax.plot([x_exp, 1.0], [vexp, vexp], color="0.35", ls=":", lw=1.5, label="Experiment (avg)")
+        if ab in OLIVINE:
+            e16, e0 = OLIVINE[ab]
+            v_ol = (e0 - e16) / 16 + e_li
+            ax.plot([0.0, 1.0], [v_ol, v_ol], color="#2ca02c", ls="-.", lw=1.8, label="DFT olivine (two endpoints)")
+            ys.append(v_ol)
         lab2 = "Experiment (two-phase plateau)"
         for x0, x1, v in EXP_PLATEAUS.get(ab, []):
             ax.plot([x0, x1], [v, v], color="0.2", lw=2.5, label=lab2)
@@ -112,9 +121,12 @@ def main():
             n_hi, n_lo = n_tot, round(n_tot * EXP_RANGE[ab])
             v_rng = (E[n_lo] - E[n_hi]) / (n_hi - n_lo) + e_li
         rng = "" if x_lo == 0 else f" ($x\\geq{x_lo:.2f}$)"
-        ax.set_title(f"{ab}, {jid}")
+        ax.set_title(f"{ab} polymorph, {jid}" if ab in OLIVINE else f"{ab}, {jid}")
         extra = f"\nDFT avg ($x\\geq{EXP_RANGE[ab]:.1f}$): {v_rng:.2f} V" if ab in EXP_RANGE else ""
         exp_lab = f"Experiment ($x\\geq{EXP_RANGE[ab]:.1f}$)" if ab in EXP_RANGE else "Experiment"
+        if ab in OLIVINE:
+            extra = f"\nDFT olivine avg: {v_ol:.2f} V"
+            exp_lab = "Experiment (olivine)"
         stats = f"OCV (DFT hull avg){rng}: {ocv:.2f} V{extra}\nALIGNN-FF avg: {sum(prof)/n:.2f} V\n{exp_lab}: {vexp:.2f} V"
         ax.text(0.03, 0.03, stats, transform=ax.transAxes, fontsize=11, va="bottom",
                 bbox=dict(boxstyle="round", fc="white", ec="0.7", alpha=0.9))

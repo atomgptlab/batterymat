@@ -14,7 +14,9 @@
       "step": 0,
       "n_li": 4,
       "energy": -101.75343341,
-      "removed_li_index": null
+      "removed_li_index": null,
+      "energy_lowest_found": -106.9008195,
+      "note": "NSW-200 value of an unconverged relaxation (the automated-protocol value). Continuing it (extra_2026-10-26/LiMnIr2-Li4-restart, then -rerun with IBRION 1) lowered the energy by up to 5.1 eV while the cell sheared (Immm -> P1), and the rerun did not converge in 300 steps: the PBE+U electronic state changes between ionic steps. energy_lowest_found is ionic step 3 of LiMnIr2-Li4-rerun. LiMnIr2 is left out of the mean deviation (analysis/04_prospective_table.py NOT_CONVERGED)."
     },
     {
       "step": 1,

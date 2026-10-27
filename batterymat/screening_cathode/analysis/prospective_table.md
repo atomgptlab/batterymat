@@ -3,14 +3,14 @@
 | Material | Group | Tier-2 pred (V) | DFT avg (V) | Error (V) | Functional | Li removed | Status |
 |---|---|---|---|---|---|---|---|
 | LiCr2P2O8 | top | 4.42 | 3.40 | -1.02 | pbe | 4/4 | complete |
-| Li3FeO3 | top | 4.39 | 4.26 | -0.14 | pbe | 24/24 | complete |
+| Li3FeO3 | top | 4.39 | 3.82 | -0.58 | pbe | 8/24 | Li24->Li16 only (Fe3+/Fe4+ range; relaxing the fully delithiated cell releases O2) |
 | Rb2LiFeF6 (entry B, same structure as A) | top | 4.25 | 6.13 | +1.87 | optb88vdw | 2/2 | complete |
 | Li2MgMn3O8 | top | 4.23 | 5.34 | +1.11 | pbe | 8/8 | complete |
 | LiV2F7 | top | 4.19 | 4.92 | +0.73 | optb88vdw | 4/4 | complete |
 | LiCoH24C8N8O12 | top | 4.10 | 5.02 | +0.91 | pbe | 1/1 | complete |
 | Rb2LiFeF6 (entry A) | top | 4.08 | 6.13 | +2.05 | optb88vdw | 2/2 | complete |
 | LiH4SNO4 | top | 4.01 | 5.18 | +1.17 | pbe | 8/8 | complete |
-| LiMnIr2 | control | 1.12 | 0.43 | -0.69 | pbe | 4/4 | complete |
+| LiMnIr2 | control | 1.12 | 0.43 | -0.69 | pbe | 4/4 | lithiated endpoint not converged; PBE+U state changes between ionic steps; 0.43-1.72 V over the states found |
 | LiCaTl2 | control | 1.11 | 1.35 | +0.24 | pbe | 1/1 | complete |
 | LiCa2Ag | control | 1.06 | 0.45 | -0.62 | optb88vdw | 1/1 | complete |
 | LiY2Ga | control | 1.04 | 0.74 | -0.30 | pbe | 1/1 | complete |
@@ -18,6 +18,7 @@
 Top candidates: N=8, DFT avg voltage range 3.40 to 6.13 V.
 Controls: N=4, DFT range 0.43 to 1.35 V.
 Separation: lowest top candidate (3.40 V) vs highest control (1.35 V) -> NO OVERLAP.
-Tier-2 vs DFT MAE over all 12 entries: 0.90 V.
-Counting Rb2LiFeF6 once (mean of its two entries): 0.81 V over 11 distinct materials.
+With the lowest lithiated-endpoint energies found for unconverged controls, the highest control is 1.72 V -> NO OVERLAP.
+Tier-2 vs DFT MAE over the 10 counted entries: 1.00 V (not counted: Li3FeO3 (partial range), LiMnIr2 (not converged)).
+Counting Rb2LiFeF6 once (mean of its two entries): 0.90 V over 9 distinct materials.
 Rb2LiFeF6 entry agreement: 6.127 vs 6.128 V (delta 1 mV).

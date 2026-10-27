@@ -10,9 +10,11 @@ The hull is computed from formation energies: `dE(x) = E(x) - x*E(1) - (1-x)*E(0
 
 ---
 
-## LFP (LiFePO₄, olivine, PBE+U)
+## LFP (LiFePO₄, PBE+U): polymorph chain and olivine endpoints
 
 **17/17 steps complete (Li₁₆→Li₀).**
+
+**Structure (found 2026-10-26):** the chain entry JVASP-42723 (mp-850917, no ICSD record) is not olivine but a Pnma polymorph with tetrahedral Li (Li–O 1.96–2.14 Å). The plateau table below is that chain. Olivine LiFePO₄, built from the olivine LiMnPO₄ entry JVASP-91261 with Fe on the Mn sites, was computed from its two endpoints (`dft_inputs/extra_2026-10-26/olivine-LFP/`): **3.55 V** with the cell fixed after full lithiation, the protocol of the chains (+0.12 V vs 3.43 V), and 3.45 V with the x = 0 cell relaxed as well (+0.02 V). The paper compares the olivine value with experiment and keeps the polymorph chain for the ALIGNN-FF comparison.
 
 | Plateau | x_Li range | DFT Hull | Experiment | Difference |
 |---------|-----------|----------|------------|------------|
@@ -24,7 +26,7 @@ The hull is computed from formation energies: `dE(x) = E(x) - x*E(1) - (1-x)*E(0
 
 **Discussion:** Experimentally, LiFePO₄ exhibits a single flat plateau at ~3.4 V due to a first-order two-phase reaction between LiFePO₄ and FePO₄ with no stable intermediate solid solutions at room temperature. The DFT hull instead produces 4 plateaus (5 hull vertices), which is an artifact of the finite 2×2×1 supercell (16 Li atoms). The discrete Li-vacancy orderings in the supercell create artificial intermediate stable compositions that would not exist in the thermodynamic limit (infinite system or disordered solid solution).
 
-The key observation is that all four plateaus are clustered within a narrow 0.19 V range (3.48–3.67 V), which is consistent with a single flat plateau broadened by finite-size effects. The systematic overestimate of +0.06 to +0.25 V relative to experiment is typical for PBE+U with U(Fe)=5.3 eV on olivine LiFePO₄.
+The key observation is that all four plateaus are clustered within a narrow 0.19 V range (3.48–3.67 V), which is consistent with a single flat plateau broadened by finite-size effects. The systematic overestimate of +0.06 to +0.25 V relative to experiment is typical for PBE+U with U(Fe)=5.3 eV on these phosphates.
 
 The slight upward slope from 3.48 V (high x) to 3.67 V (low x) reflects stronger Fe-Fe interactions at low Li content in the finite supercell — in the thermodynamic limit, these would average out to the single ~3.4 V plateau.
 
@@ -32,9 +34,11 @@ The slight upward slope from 3.48 V (high x) to 3.67 V (low x) reflects stronger
 
 ---
 
-## LMP (LiMnPO₄, olivine, PBE+U)
+## LMP (LiMnPO₄, PBE+U): polymorph chain and olivine endpoints
 
-**17/17 steps complete (Li₁₆→Li₀).** The fully delithiated endpoint (MnPO₄, Mn³⁺ high-spin d⁴) was rerun on 2026-10-26 (`dft_inputs/extra_2026-10-26/LMP-Li0/`): the earlier attempts had used the step-15 POTCAR (Li_sv, Mn_pv, P) on a Mn, P, O cell (NELECT 576 instead of 672), which is why that run sat ~190 eV above the expected energy. With the correct POTCAR it converged in 46 ionic steps (Mn ±3.97 μB, O ≤ 0.07 μB).
+**17/17 steps complete (Li₁₆→Li₀).**
+
+**Structure (found 2026-10-26):** the chain entry JVASP-116897 (mp-776296, no ICSD record) is the same tetrahedral-Li Pnma polymorph as the LFP entry. Olivine LiMnPO₄ (JVASP-91261, mp-18997) endpoints in `dft_inputs/extra_2026-10-26/olivine-LMP/`: **3.92 V** with the cell fixed after full lithiation (−0.18 V vs ~4.1 V) and 3.81 V with the x = 0 cell relaxed (−0.29 V). Both olivine LiMnPO₄ entries of JARVIS (JVASP-91261 and JVASP-121734, ALIGNN-FF avg 3.75 V) are removed by the 5.5 V max-voltage filter (ALIGNN-FF max 5.80 and 5.84 V at the last Li removal). The fully delithiated endpoint (MnPO₄, Mn³⁺ high-spin d⁴) was rerun on 2026-10-26 (`dft_inputs/extra_2026-10-26/LMP-Li0/`): the earlier attempts had used the step-15 POTCAR (Li_sv, Mn_pv, P) on a Mn, P, O cell (NELECT 576 instead of 672), which is why that run sat ~190 eV above the expected energy. With the correct POTCAR it converged in 46 ionic steps (Mn ±3.97 μB, O ≤ 0.07 μB).
 
 Step 0 converged in the block AFM order, steps 1–16 in the per-atom alternating order. Step 0 was recomputed in the alternating order (`extra_2026-10-26/LMP-Li16-altmag/`): 0.161 eV per cell lower. `energies.json` uses that value (the block-order energy is kept as `energy_block_order`).
 
@@ -50,7 +54,7 @@ Step 0 converged in the block AFM order, steps 1–16 in the per-atom alternatin
 | 8 | 0 → 0.19 | 4.24 V |
 | **Weighted avg** | **0 → 1.0** | **3.93 V** (exp ~4.1 V, −0.17 V) |
 
-**Discussion:** the average underestimates the experimental ~4.1 V plateau by 0.17 V, the opposite sign from LFP (+0.17 V) under the same Materials Project U calibration; consistent with the oxide-fitted U being too small for Mn (and too large for Fe) in the phosphates. Like LFP, LMP is a two-phase system with a single flat plateau experimentally; the finite supercell splits it into several narrow hull plateaus. With the block-order step 0 the average would be 3.92 V.
+**Discussion:** the polymorph average underestimates the experimental ~4.1 V plateau by 0.17 V and the olivine average by 0.18 V, the opposite sign from LFP (olivine +0.12 V) under the same Materials Project U calibration; consistent with the oxide-fitted U being too small for Mn (and too large for Fe) in the phosphates. Like LFP, LMP is a two-phase system with a single flat plateau experimentally; the finite supercell splits it into several narrow hull plateaus. With the block-order step 0 the average would be 3.92 V.
 
 **Experimental references:** ~4.1 V plateau: Padhi, Nanjundaswamy & Goodenough, *J. Electrochem. Soc.* **144**, 1188 (1997) (Mn³⁺/Mn²⁺ at 4.1 V); Aravindan, Gnanaraj, Lee & Madhavi, *J. Mater. Chem. A* **1**, 3518 (2013). Two-phase mechanism: Delacourt et al., *Chem. Mater.* **16**, 93 (2004); Li, Azuma & Tohda, *Electrochem. Solid-State Lett.* **5**, A135 (2002)
 
@@ -98,7 +102,7 @@ Over the usual cycling window, from full lithiation (Li 1 → about 0.4 per TM),
 
 **Reported run: `JVASP-2017-LCO-B88` (true optB88-vdW: GGA=BO, PARAM1=0.1833333333, PARAM2=0.22), 9/9 steps converged, no manual intervention.** The run in the original submission (`JVASP-2017-LCO`) used GGA=OR, which is optPBE-vdW, not optB88-vdW; it is kept for comparison only.
 
-Experimentally LiCoO₂ is cycled only to about x = 0.5 (4.2 V charge cut-off), so the benchmark compares the DFT average over x = 1 → 0.5. The measured open-circuit voltage is flat at 3.92 V for 3/4 < x < 1 and at 4.50 V for 0 < x < 1/4 (Ohzuku & Ueda 1994). Over x = 1 → 0.5 it stays at 3.92 V down to x ≈ 0.74 and then rises to 4.20 V at x = 0.5. Weighted by composition (from the digitized curve, uncertainty about 0.02 V) it averages 3.97 V, which is the reference. The original submission used 4.05 V, the midpoint of 3.92 and 4.2 V, which is not a weighted average.
+Experimentally LiCoO₂ is cycled only to about x = 0.5 (4.2 V charge cut-off), so the benchmark compares the DFT average over x = 1 → 0.5. The measured open-circuit voltage is flat at 3.92 V for 3/4 < x < 1 and at 4.50 V for 0 < x < 1/4 (Ohzuku & Ueda 1994). Over x = 1 → 0.5 it stays at 3.92 V down to x ≈ 0.74 and then rises to 4.20 V at x = 0.5. Weighted by composition (from the digitized curve, uncertainty about 0.02 V) it averages 3.97 V, which is the reference. The original submission used 4.05 V, close to the midpoint of 3.92 and 4.2 V, which is not a weighted average.
 
 | Range | Experiment | optB88-vdW+U | PBE+U (same cell) | optPBE-vdW+U (original run) |
 |-------|-----------|--------------|-------------------|-----------------------------|
@@ -119,26 +123,29 @@ Hull plateaus (optB88): 4.18 / 4.23 / 4.62 / 4.78 V. Cell volume within 1% of th
 
 | Material | Structure | Functional | Hull plateaus | DFT avg V | Exp avg V | Error |
 |----------|-----------|-----------|---------------|-----------|-----------|-------|
-| LFP | Olivine | PBE+U | 4 (artifact of finite cell; should be 1) | 3.60 V | 3.43 V | +0.17 V |
-| LMP | Olivine | PBE+U | 8 (finite-cell splitting of one plateau) | 3.93 V | ~4.1 V | −0.17 V |
+| LFP | Olivine (endpoints)* | PBE+U | polymorph chain: 4 (finite-cell artifact) | 3.55 V | 3.43 V | +0.12 V |
+| LMP | Olivine (endpoints)* | PBE+U | polymorph chain: 8 (finite-cell splitting) | 3.92 V | ~4.1 V | −0.18 V |
 | LMO | Spinel | PBE+U | 2 (measured profile has two steps) | 4.08 V | 4.04 V | +0.04 V |
 | NMC | Layered | PBE+U | 5 | 4.40 V† | 4.37 V† | +0.03 V (−0.25 / +0.28 by half) |
 | LCO | Layered | optB88-vdW | 4; reproduces the measured 0.58 V plateau rise | 4.21 V‡ | 3.97 V‡ | +0.24 V |
 
 † Over Li₀.₅ → Li₀ per transition metal, the range the cell covers (experiment to Li₀.₀₃).
 ‡ Average over x = 1 → 0.5, the experimentally cycled range (full range 4.45 V).
+\* Olivine two-endpoint value with the cell fixed after full lithiation; the polymorph chains of JVASP-42723 / JVASP-116897 give 3.60 / 3.93 V.
+
+With the cell also relaxed at the compositions that fix each average (`dft_inputs/extra_2026-10-26/README.md`; NMC in `extra_2026-10-01/`): LFP (olivine) 3.45 V (+0.02), LMP (olivine) 3.81 V (−0.29), LMO 3.94 V (−0.10), NMC 4.18 V (−0.19), LCO 4.21 V (+0.24; its chain already relaxes the cell). Polymorph chains relaxed: LFP 3.30 V, LMP 3.49 V.
 
 ### Key findings
 
-1. **All five averages are within 0.25 V of experiment**, each compared over the lithium range its cell covers or over which it is cycled.
+1. **All five averages are within 0.25 V of experiment with the automated fixed-cell protocol (olivine values for LFP and LMP), and within 0.3 V with the cell relaxed at the compositions that fix each average**, each compared over the lithium range its cell covers or over which it is cycled.
 
 2. **LCO reproduces the shape of the voltage profile.** With the correct optB88-vdW functional, the 0.58 V rise between the two measured two-phase plateaus is reproduced to within 0.02 V at a nearly uniform +0.26 to +0.28 V offset. PBE+U is flat and misses the rise.
 
 3. **LMO reproduces the two-step profile**, with both plateaus about 0.06 V above the measured open-circuit values. The computed step is at x = 0.44, the measured one near 0.60.
 
-4. **LFP reproduces the flat plateau.** The four hull plateaus lie within 0.19 V of each other, consistent with a single flat plateau broadened by finite-size effects. The average is +0.17 V above the 3.43 V two-phase equilibrium potential (GITT, Kondo et al. 2018).
+4. **LFP: flat profile.** The four hull plateaus of the polymorph chain lie within 0.19 V of each other. The olivine average is +0.12 V above the 3.43 V two-phase equilibrium potential (GITT, Kondo et al. 2018); the polymorph chain gives 3.60 V.
 
-5. **LMP is complete.** The fully delithiated MnPO₄ endpoint (Mn³⁺, d⁴) converged once it was rerun with the correct POTCAR; the earlier failure was a setup error, not a PBE+U convergence problem. The full-range average, 3.93 V, underestimates experiment by 0.17 V.
+5. **LMP is complete.** The fully delithiated MnPO₄ endpoint (Mn³⁺, d⁴) converged once it was rerun with the correct POTCAR; the earlier failure was a setup error, not a PBE+U convergence problem. The full-range average of the polymorph chain, 3.93 V, underestimates experiment by 0.17 V; olivine gives 3.92 V (−0.18 V).
 
 6. **NMC agrees on average but not in shape.** Over the matching lithium range the first half is 0.25 V low and the second half 0.28 V high. The rise between the halves is more than twice the measured one, with both functionals and with or without cell relaxation.
 
@@ -146,8 +153,8 @@ Hull plateaus (optB88): 4.18 / 4.23 / 4.62 / 4.78 V. Cell volume within 1% of th
 
 | Functional | Materials | Typical error | Direction |
 |-----------|-----------|--------------|-----------|
-| PBE+U | LFP, LMO | +0.04 to +0.17 V | Overestimates |
-| PBE+U | LMP | −0.17 V | Underestimates (U too low for Mn²⁺/³⁺) |
+| PBE+U | LFP (olivine), LMO | +0.04 to +0.12 V | Overestimates (fixed cell; relaxed cells −0.10 to +0.02 V) |
+| PBE+U | LMP (olivine) | −0.18 V | Underestimates (U too low for Mn²⁺/³⁺?); −0.29 V with relaxed cells |
 | PBE+U | NMC (matched Li range) | −0.25 V (first half), +0.28 V (second half) | Rise between the halves too steep |
 | optB88-vdW | LCO | +0.24 to +0.28 V | Uniform overestimate across the plateaus and the cycled range |
 | PBE+U | LCO (comparison) | −0.10 to −0.69 V | Flat profile; misses the rise at low Li content |

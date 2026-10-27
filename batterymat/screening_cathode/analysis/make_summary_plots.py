@@ -27,6 +27,10 @@ AVG_V_TIER1  = [3.25, 3.10, 3.60, 3.70, 3.42]
 # LCO: optB88-vdW+U rerun (JVASP-2017-LCO-B88), average over x = 1 -> 0.5 (Li8 -> Li4), the
 # experimentally cycled range; full-range average is 4.45 V (see revision_voltages.json).
 AVG_V_DFT    = [3.60, 3.93, 4.08, 4.40, 4.21]
+# LFP and LMP above are the JARVIS entries JVASP-42723/116897, a Pnma polymorph with tetrahedral Li.
+# Olivine two-endpoint DFT averages with the protocol of the chains (Table 8 of the paper;
+# dft_inputs/extra_2026-10-26/olivine-*/), drawn as markers on the DFT bars: index -> V.
+AVG_V_DFT_OLIVINE = {0: 3.55, 1: 3.92}
 MAX_V_ALIGNN = [3.74, 3.60, 4.42, 4.77, 5.06]
 MAX_V_DFT    = [3.99, 4.34, 4.41, 5.03, 5.21]
 CAP_ALIGNN   = [632, 606, 667, 702, 1372]
@@ -100,6 +104,13 @@ grouped_bar(
     "Maximum voltage",
     "Max Voltage (V)", ylim=(0, 8),
 )
+# olivine markers on the DFT bars (third of four series, offset +0.1)
+axes[0].scatter([i + 0.1 for i in AVG_V_DFT_OLIVINE], list(AVG_V_DFT_OLIVINE.values()), marker="D", s=55,
+                facecolor="white", edgecolor="black", linewidth=1.3, zorder=5, label="DFT, olivine")
+for t in axes[0].texts:  # lift the value labels of those bars clear of the markers
+    if any(abs(t.get_position()[0] - (i + 0.1)) < 1e-6 for i in AVG_V_DFT_OLIVINE):
+        t.set_y(t.get_position()[1] + 0.12)
+axes[0].legend(loc="upper center", ncol=2, fontsize=12)
 fig.text(0.005, 0.98, "a", fontsize=20, fontweight="bold", va="top")
 fig.tight_layout(rect=(0.015, 0, 1, 1))
 fig.savefig("voltage_summary.png", dpi=300)

@@ -32,6 +32,19 @@ LABELS = {
     "JVASP-81829": ("LiMnIr2", "control"),
 }
 
+# Chains reported over part of the lithium range: jid -> (n_li start, n_li end, reason).
+# They stay in the table and in the separation test but not in the full-range MAE.
+PARTIAL = {
+    "JVASP-117295": (24, 16, "Fe3+/Fe4+ range; relaxing the fully delithiated cell releases O2"),
+}
+
+# Chains with an endpoint that has no converged energy: jid -> reason. The automated-protocol value
+# stays in the table and in the separation test (with the range spanned by energy_lowest_found) but
+# not in the MAE.
+NOT_CONVERGED = {
+    "JVASP-81829": "lithiated endpoint not converged; PBE+U state changes between ionic steps",
+}
+
 # tier-2 (ALIGNN-FF) predicted average voltages from the selection
 tier2 = {}
 with open(os.path.join(HERE, "prospective_selection.csv")) as f:
@@ -53,18 +66,30 @@ for jid, ej in chains.items():
     d = json.load(open(ej))
     rec = sorted([s for s in d["steps"] if s.get("energy") is not None],
                  key=lambda s: s["n_li"], reverse=True)
+    partial = PARTIAL.get(jid)
+    if partial:
+        rec = [s for s in rec if s["n_li"] in partial[:2]]
     if len(rec) < 2:
         continue
     n_removed = rec[0]["n_li"] - rec[-1]["n_li"]
     avg_v = (rec[-1]["energy"] - rec[0]["energy"]) / n_removed + d["e_li_metal"]
     complete = rec[-1]["n_li"] == 0
+    hi = None
+    if partial:
+        status = f"Li{partial[0]}->Li{partial[1]} only ({partial[2]})"
+    elif jid in NOT_CONVERGED:
+        lo_e = rec[0].get("energy_lowest_found", rec[0]["energy"])
+        hi = (rec[-1]["energy"] - lo_e) / n_removed + d["e_li_metal"]
+        status = f"{NOT_CONVERGED[jid]}; {avg_v:.2f}-{hi:.2f} V over the states found"
+    else:
+        status = "complete" if complete else "partial"
     name, grp = LABELS[jid]
     pred = tier2[jid]
     rows.append({
         "jid": jid, "name": name, "grp": grp, "pred": pred, "dft": avg_v,
         "err": avg_v - pred, "func": d["functional"],
         "steps": f"{n_removed}/{d['n_li_total']}",
-        "status": "complete" if complete else "partial",
+        "status": status, "full": not partial and jid not in NOT_CONVERGED, "hi": hi,
     })
 
 rows.sort(key=lambda r: (r["grp"] != "top", -r["pred"]))
@@ -81,17 +106,25 @@ tops = [r for r in rows if r["grp"] == "top"]
 ctrls = [r for r in rows if r["grp"] == "control"]
 min_top = min(r["dft"] for r in tops)
 max_ctrl = max(r["dft"] for r in ctrls)
-mae = sum(abs(r["err"]) for r in rows) / len(rows)
+full = [r for r in rows if r["full"]]
+mae = sum(abs(r["err"]) for r in full) / len(full)
 lines.append(f"Top candidates: N={len(tops)}, DFT avg voltage range "
              f"{min_top:.2f} to {max(r['dft'] for r in tops):.2f} V.")
 lines.append(f"Controls: N={len(ctrls)}, DFT range "
              f"{min(r['dft'] for r in ctrls):.2f} to {max_ctrl:.2f} V.")
 lines.append(f"Separation: lowest top candidate ({min_top:.2f} V) vs highest control "
              f"({max_ctrl:.2f} V) -> {'NO OVERLAP' if min_top > max_ctrl else 'OVERLAP'}.")
-lines.append(f"Tier-2 vs DFT MAE over all {len(rows)} entries: {mae:.2f} V.")
-rb = [r for r in rows if r["jid"] in ("JVASP-141543", "JVASP-154749")]
+max_ctrl_hi = max(r["hi"] or r["dft"] for r in ctrls)
+if max_ctrl_hi > max_ctrl:
+    lines.append(f"With the lowest lithiated-endpoint energies found for unconverged controls, the highest control "
+                 f"is {max_ctrl_hi:.2f} V -> {'NO OVERLAP' if min_top > max_ctrl_hi else 'OVERLAP'}.")
+excl = [r["name"] + (" (partial range)" if r["jid"] in PARTIAL else " (not converged)")
+        for r in rows if not r["full"]]
+lines.append(f"Tier-2 vs DFT MAE over the {len(full)} counted entries: {mae:.2f} V"
+             + (f" (not counted: {', '.join(excl)})." if excl else "."))
+rb = [r for r in full if r["jid"] in ("JVASP-141543", "JVASP-154749")]
 if len(rb) == 2:
-    rest = [abs(r["err"]) for r in rows if r not in rb]
+    rest = [abs(r["err"]) for r in full if r not in rb]
     mae11 = (sum(rest) + sum(abs(r["err"]) for r in rb) / 2) / (len(rest) + 1)
     lines.append(f"Counting Rb2LiFeF6 once (mean of its two entries): {mae11:.2f} V "
                  f"over {len(rest) + 1} distinct materials.")

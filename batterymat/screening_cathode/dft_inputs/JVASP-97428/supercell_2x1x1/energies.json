@@ -61,8 +61,10 @@
     {
       "step": 8,
       "n_li": 0,
-      "energy": -430.53520781,
-      "removed_li_index": 0
+      "energy": -430.53721971,
+      "removed_li_index": 0,
+      "energy_nsw200": -430.53520781,
+      "energy_source": "extra_2026-10-26/LiH4SNO4-Li0-restart: continued from the NSW-200 geometry and wavefunction of this step (it had hit NSW = 200 unconverged), converged in 5 CG steps; energy_nsw200 is the original unconverged run"
     }
   ]
 }
