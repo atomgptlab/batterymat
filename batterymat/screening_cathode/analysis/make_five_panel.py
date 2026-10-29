@@ -26,7 +26,7 @@ plt.rcParams.update({"font.size": 13, "axes.labelsize": 14, "axes.titlesize": 14
 MATS = [("JVASP-42723", "LFP", "Li$_x$FePO$_4$", 3.43),
         ("JVASP-116897", "LMP", "Li$_x$MnPO$_4$", 4.10),
         ("JVASP-141792", "LMO", "Li$_x$Mn$_2$O$_4$", 4.04),
-        ("JVASP-144791", "NMC", "Li$_x$Mn$_3$Co$_2$Ni$_3$O$_{16}$", 4.37),
+        ("JVASP-144791", "NMC", "Li$_{4x}$Mn$_3$Co$_2$Ni$_3$O$_{16}$", 4.37),
         ("JVASP-2017", "LCO", "Li$_x$CoO$_2$", 3.97)]
 # chain directory when it differs from <jid>-<abbrev>: LCO uses the optB88-vdW rerun
 DIRS = {"LCO": "JVASP-2017-LCO-B88"}

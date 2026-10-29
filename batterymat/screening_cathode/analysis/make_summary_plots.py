@@ -124,6 +124,7 @@ grouped_bar(
     "Theoretical volumetric capacity",
     "Volumetric Capacity (mAh/cm³)",
 )
+ax.set_ylim(0, 1650)  # headroom for the rotated value labels of the LCO bars
 fig.text(0.005, 0.98, "b", fontsize=20, fontweight="bold", va="top")
 fig.tight_layout(rect=(0.02, 0, 1, 1))
 fig.savefig("capacity_summary.png", dpi=300)
