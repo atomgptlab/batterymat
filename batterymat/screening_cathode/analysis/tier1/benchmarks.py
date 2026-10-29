@@ -10,8 +10,10 @@ from predict import ARCHIVE, MODEL_DIR, Tier1Predictor, load_cache  # noqa: E402
 
 BENCH = {"JVASP-42723": "LFP LiFePO4", "JVASP-116897": "LMP LiMnPO4", "JVASP-141792": "LMO LiMn2O4",
          "JVASP-144791": "NMC Li4Mn3Co2Ni3O16", "JVASP-2017": "LCO LiCoO2"}
-DFT_AVG = {"JVASP-42723": 3.60, "JVASP-116897": 3.91, "JVASP-141792": 4.08, "JVASP-144791": 4.40, "JVASP-2017": 4.18}
-EXP = {"JVASP-42723": "3.45", "JVASP-116897": "~4.1", "JVASP-141792": "4.1", "JVASP-144791": "~3.7", "JVASP-2017": "3.9-4.2"}
+# DFT chain averages of these JARVIS entries (LFP/LMP: the tetrahedral-Li polymorph chains; LCO: optB88-vdW over
+# x = 1 -> 0.5) and the experimental references of the paper (NMC: NMC-111 over the Li range the cell covers)
+DFT_AVG = {"JVASP-42723": 3.60, "JVASP-116897": 3.93, "JVASP-141792": 4.08, "JVASP-144791": 4.40, "JVASP-2017": 4.21}
+EXP = {"JVASP-42723": "3.43", "JVASP-116897": "4.10", "JVASP-141792": "4.04", "JVASP-144791": "4.37", "JVASP-2017": "3.97"}
 
 ids = json.load(open(os.path.join(MODEL_DIR, "ids_train_val_test.json")))
 part = {j: k.replace("id_", "") for k, v in ids.items() for j in v}
