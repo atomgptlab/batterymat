@@ -41,6 +41,7 @@ Usage
   python enumerate.py JVASP-2017   [--relax auto|all|minimal|none] [--workers 4]
   python enumerate.py JVASP-96563  --ref-poscar /path/to/POSCAR
   python enumerate.py --summary    # rebuild enumeration_summary.md + PNGs from JSON
+  python enumerate.py --figures --results-suffix _mac   # redraw the SI figure (panels a-d) only
 
 Environment: ALIGNN-FF on this Mac needs KMP_DUPLICATE_LIB_OK=TRUE and a single
 OpenMP thread per process (multithreaded torch+dgl segfaults); the script sets
@@ -640,7 +641,7 @@ def _fe_curve(energy_by_mask_or_list, e_full, e_empty, n_tot):
     return fe
 
 
-def plot_system(res, out_png):
+def plot_system(res, out_png, letters="abc"):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -678,7 +679,7 @@ def plot_system(res, out_png):
         ax.set_title(title); ax.set_xticks(range(0, n + 1)); ax.invert_xaxis(); ax.grid(alpha=0.25)
         ax.legend(loc="upper center", frameon=False)
 
-    mixing_panel(axes[0], "e_sp", a_sp["per_composition"], "(a) single-point, unrelaxed lattice",
+    mixing_panel(axes[0], "e_sp", a_sp["per_composition"], "single-point, unrelaxed lattice",
                  ("level_a_single_point", "global_min_path"))
     # gap panel: E - E_min(n_Li), symlog so 25 meV and 1 eV are both visible
     ax = axes[1]
@@ -696,11 +697,13 @@ def plot_system(res, out_png):
     ax.set_yscale("symlog", linthresh=GAP_WINDOW_MEV, linscale=1.0)
     ax.set_ylim(-3, max(ys) * 1.6)
     ax.set_xlabel("n$_{Li}$ remaining in cell"); ax.set_ylabel("E $-$ E$_{min}$(n$_{Li}$)  (meV / cell, symlog)")
-    ax.set_title("(a') greedy gap to the exhaustive minimum"); ax.set_xticks(range(0, n + 1)); ax.invert_xaxis()
+    ax.set_title("greedy gap to the exhaustive minimum"); ax.set_xticks(range(0, n + 1)); ax.invert_xaxis()
     ax.grid(alpha=0.25, which="both"); ax.legend(loc="upper center", frameon=False)
     if have_b:
         mixing_panel(axes[2], "e_relax", res["analysis"]["level_b_relaxed"]["per_composition"],
-                     "(b) after FIRE steps (diagnostic, see caveat)", ("level_b_relaxed", "global_min_relaxed_path"), contcar=True)
+                     "after FIRE steps (diagnostic, see caveat)", ("level_b_relaxed", "global_min_relaxed_path"), contcar=True)
+    for a, letter in zip(axes, letters):  # panel letters (computation levels are named in the titles)
+        a.text(-0.10, 1.03, letter, transform=a.transAxes, fontsize=22, fontweight="bold", va="bottom", ha="left")
     fig.suptitle(f"{res['jid']}  {res['formula']}  ({res['n_atoms']} atoms, {n} Li sites, {2**n} configurations)", fontsize=15)
     fig.tight_layout()
     fig.savefig(out_png, dpi=170)
@@ -846,8 +849,19 @@ def main():
     ap.add_argument("--ref-poscar", default=None)
     ap.add_argument("--resume", action="store_true", help="reuse energies already in results_JID.json")
     ap.add_argument("--summary", action="store_true", help="only rebuild summary + plots from existing JSON")
+    ap.add_argument("--figures", action="store_true",
+                    help="only redraw enumeration_JID.png from results_JID<suffix>.json, panels lettered across --jids")
+    ap.add_argument("--results-suffix", default="", help="e.g. _mac: the single-point runs behind the SI figure")
     ap.add_argument("--jids", nargs="*", default=["JVASP-2017", "JVASP-96563"])
     args = ap.parse_args()
+    if args.figures:
+        k = 0
+        for jid in args.jids:
+            res = json.load(open(HERE / f"results_{jid}{args.results_suffix}.json"))
+            ncol = 3 if "level_b_relaxed" in res["analysis"] else 2
+            plot_system(res, HERE / f"enumeration_{jid}.png", letters="abcdef"[k:k + ncol])
+            k += ncol
+        return
     if args.summary:
         for jid in args.jids:
             p = HERE / f"results_{jid}.json"
