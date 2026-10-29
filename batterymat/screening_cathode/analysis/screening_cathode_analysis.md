@@ -56,7 +56,7 @@ Step 0 converged in the block AFM order, steps 1–16 in the per-atom alternatin
 
 **Discussion:** the polymorph average underestimates the experimental ~4.1 V plateau by 0.17 V and the olivine average by 0.18 V, the opposite sign from LFP (olivine +0.12 V) under the same Materials Project U calibration; consistent with the oxide-fitted U being too small for Mn (and too large for Fe) in the phosphates. Like LFP, LMP is a two-phase system with a single flat plateau experimentally; the finite supercell splits it into several narrow hull plateaus. With the block-order step 0 the average would be 3.92 V.
 
-**Experimental references:** ~4.1 V plateau: Padhi, Nanjundaswamy & Goodenough, *J. Electrochem. Soc.* **144**, 1188 (1997) (Mn³⁺/Mn²⁺ at 4.1 V); Aravindan, Gnanaraj, Lee & Madhavi, *J. Mater. Chem. A* **1**, 3518 (2013). Two-phase mechanism: Delacourt et al., *Chem. Mater.* **16**, 93 (2004); Li, Azuma & Tohda, *Electrochem. Solid-State Lett.* **5**, A135 (2002)
+**Experimental references:** ~4.1 V plateau: Aravindan, Gnanaraj, Lee & Madhavi, *J. Mater. Chem. A* **1**, 3518 (2013). (Padhi, Nanjundaswamy & Goodenough, *J. Electrochem. Soc.* **144**, 1188 (1997) place Mn³⁺/Mn²⁺ at 4.1 V only in mixed LiFe₁₋ₓMnₓPO₄; they could not delithiate pure LiMnPO₄.) Two-phase mechanism: Delacourt et al., *Chem. Mater.* **16**, 93 (2004); Li, Azuma & Tohda, *Electrochem. Solid-State Lett.* **5**, A135 (2002)
 
 ---
 

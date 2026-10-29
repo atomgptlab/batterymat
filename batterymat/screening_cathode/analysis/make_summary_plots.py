@@ -38,7 +38,8 @@ CAP_DFT      = [605, 586, 607, 679, 1380]  # LCO: relaxed optB88 step_00 volume 
 
 # Experimental references (order LFP, LMP, LMO, NMC, LCO).
 # Avg: LFP 3.43 V two-phase equilibrium potential from GITT (Kondo et al., JES 165,
-#   A2047, 2018); LMP ~4.1 V plateau (Padhi 1997; Aravindan et al., JMCA 1, 3518, 2013);
+#   A2047, 2018); LMP ~4.1 V plateau (Aravindan et al., JMCA 1, 3518, 2013; Padhi 1997 could
+#   not delithiate pure LiMnPO4);
 #   LMO 4.04 V, composition-weighted open-circuit voltage (Ohzuku, Kitagawa & Hirai,
 #   JES 137, 769, 1990: 4.110 V for 0.27 < x < 0.60, taken to x = 0; one-phase region
 #   centered at 3.94 V for 0.60 < x < 1); NMC 4.37 V, open-circuit voltage of NMC-111
@@ -109,7 +110,7 @@ axes[0].scatter([i + 0.1 for i in AVG_V_DFT_OLIVINE], list(AVG_V_DFT_OLIVINE.val
                 facecolor="white", edgecolor="black", linewidth=1.3, zorder=5, label="DFT, olivine")
 for t in axes[0].texts:  # lift the value labels of those bars clear of the markers
     if any(abs(t.get_position()[0] - (i + 0.1)) < 1e-6 for i in AVG_V_DFT_OLIVINE):
-        t.set_y(t.get_position()[1] + 0.12)
+        t.set_y(t.get_position()[1] + 0.22)
 axes[0].legend(loc="upper center", ncol=2, fontsize=12)
 fig.text(0.005, 0.98, "a", fontsize=20, fontweight="bold", va="top")
 fig.tight_layout(rect=(0.015, 0, 1, 1))
